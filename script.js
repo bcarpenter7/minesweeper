@@ -89,6 +89,7 @@ board = [
 ]
 state = 'playing'
 document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
+message.innerText = 'Sweep them mines!'
 render()
 }
 
