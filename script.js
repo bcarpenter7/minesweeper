@@ -3,22 +3,22 @@
 
 
 
-const COLORS = {
-    null: 'blue',
-    mine: 'gray',
-    blank: 'yellow'
-}
+// const COLORS = {
+//     null: 'blue',
+//     mine: 'gray',
+//     blank: 'yellow'
+// }
 
 
 
-const mine = `<img src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png'>`
+const mine = `<img src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
 
 
 const PICTURES = {
-    null: `<span>boy</span>`,
+    null: '',
     mine: mine,
-    number: mine
-    }
+    number: `<p>3</p>`
+}
 
 
 let board;
@@ -34,10 +34,10 @@ init()
 function init(){
 
 board = [
-    [null, 'blank', null, null, null],
+    [null, 'number', null, null, null],
     [null, 'mine', null, null, null],
     [null, null, null, null, null],
-    [null, null, null, null, null],
+    [null, null, null, 'mine', null],
     [null, null, null, null, null],
 ]
 
@@ -59,8 +59,7 @@ function renderBoard(){
     
     for(let i = 0; i <= board.flat().length - 1; i++){
       let val = document.querySelector(`#board :nth-child(${i + 1})`)
-      val.style.backgroundColor = 'none'
-    //   val.style.backgroundColor = COLORS[board.flat()[i]];
+
         val.innerHTML = PICTURES[board.flat()[i]]
  
     }

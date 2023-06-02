@@ -20,7 +20,7 @@
 }
 
 .box {
-    /* background-color: gray; */
+    background-color: gray;
     height: 8vmin;
     width: 8vmin;
     border: 1px solid white;
