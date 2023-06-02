@@ -1,17 +1,17 @@
-const mine = `<img class='' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
+const mine = `<img class='hidden' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
 
 
 const PICTURES = {
     null: '',
     mine: mine,
-    1: `<p class=' numbers'>1</p>`,
-    2: `<p class=' numbers'>2</p>`,
-    3: `<p class=' numbers'>3</p>`,
-    4: `<p class=' numbers'>4</p>`,
-    5: `<p class=' numbers'>5</p>`,
-    6: `<p class=' numbers'>6</p>`,
-    7: `<p class=' numbers'>7</p>`,
-    8: `<p class=' numbers'>8</p>`,
+    1: `<p class='hidden numbers'>1</p>`,
+    2: `<p class='hidden numbers'>2</p>`,
+    3: `<p class='hidden numbers'>3</p>`,
+    4: `<p class='hidden numbers'>4</p>`,
+    5: `<p class='hidden numbers'>5</p>`,
+    6: `<p class='hidden numbers'>6</p>`,
+    7: `<p class='hidden numbers'>7</p>`,
+    8: `<p class='hidden numbers'>8</p>`,
 }
 
 
@@ -153,7 +153,7 @@ function handleNULL(e) {
 //Left fill
 for(let i = 1; i < newBoard.length; i++){
 let edgeNums = [21, 16, 11, 6, 1]
-    if(newBoard[idx - i] !== null || edgeNums.indexOf(idx) > 0){
+    if(newBoard[idx - i] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else {
         document.getElementById(`${idx - i + 1}`).style.backgroundColor = 'lightgrey'
@@ -165,7 +165,7 @@ console.log(e, idx, newBoard[idx], 'WHERE DID I CLICK')
 //Right fill
 for(let i = 0; i < newBoard.length; i++){
 let edgeNums = [25, 20, 15, 10, 5]
-    if(newBoard[idx + i] !== null || edgeNums.indexOf(idx) > 0){
+    if(newBoard[idx + i] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else {
         document.getElementById(`${idx + i + 1}`).style.backgroundColor = 'lightgrey'
@@ -175,8 +175,9 @@ let edgeNums = [25, 20, 15, 10, 5]
 
 
 ///Have to subtract one everywhere but when getting element because id of elements are not zero indexed whereas the newBoard is
-//Top fill
+//Top fill  
 for(let i = 1; i < 5; i++){
+    console.log(idx, newBoard[idx - (5 * i) - 1])
     if(newBoard[idx - (5 * i) - 1] !== null){
     break;
     } else if (newBoard[idx - (5 * i) - 1] === null){
@@ -187,7 +188,8 @@ for(let i = 1; i < 5; i++){
 
 //Top Right fill
 for(let i = 1; i < 5; i++){
-    if(newBoard[idx - (5 * i)] !== null){
+let edgeNums = [25, 20, 15, 10, 5]
+    if(newBoard[idx - (5 * i)] !== null  || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[idx - (5 * i)] === null){
         document.getElementById(`${idx - (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
@@ -197,7 +199,10 @@ for(let i = 1; i < 5; i++){
 
 //Top Left fill
 for(let i = 1; i < 5; i++){
-    if(newBoard[idx - (5 * i) - 2] !== null){
+    
+let edgeNums = [21, 16, 11, 6, 1]
+console.log(idx, edgeNums.indexOf(idx) > 0)
+    if(newBoard[idx - (5 * i) - 2] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[idx - (5 * i) - 2] === null){
         document.getElementById(`${idx - (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
@@ -218,8 +223,9 @@ for(let i = 1; i < 5; i++){
 
 //Bottom Left Dia fill
 for(let i = 1; i < 5; i++){
+    let edgeNums = [21, 16, 11, 6, 1]
     console.log('TRYING', i)
-    if(newBoard[idx + (5 * i) - 2] !== null){
+    if(newBoard[idx + (5 * i) - 2] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[idx + (5 * i) - 2] === null){
         document.getElementById(`${idx + (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
@@ -228,17 +234,14 @@ for(let i = 1; i < 5; i++){
 
 //Bottom Right Dia fill
 for(let i = 1; i < 5; i++){
+    let edgeNums = [25, 20, 15, 10, 5]
     console.log('TRYING', i)
-    if(newBoard[idx + (5 * i)] !== null){
+    if(newBoard[idx + (5 * i)] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[idx + (5 * i)] === null){
         document.getElementById(`${idx + (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
     }
 }
-
-
-
-
 
 
 
