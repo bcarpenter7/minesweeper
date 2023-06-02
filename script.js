@@ -35,6 +35,7 @@ boardLayout.addEventListener('click', handleClick)
 
 function handleLoss(){
 message.innerText = 'You Lose!'
+/// Reveals bombs after loss
 document.querySelectorAll('.hidden').forEach(e => e.classList.remove('hidden'))
 }
 
