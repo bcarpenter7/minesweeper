@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    display: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5vmin;
+    color: #282727;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    margin-top: 5vmin;
+}
+
+.box {
+    /* background-color: gray; */
+    height: 8vmin;
+    width: 8vmin;
+    border: 1px solid white;
+    font-size: 2vmin;
+    text-align: center;
+    color: black;
+}
+
+.box:hover {
+    transform: scale(1.05);
+}
