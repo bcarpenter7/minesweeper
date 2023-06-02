@@ -1,51 +1,85 @@
-
-
-
-
-
-const mine = `<img src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
+const mine = `<img class='hidden' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
 
 
 const PICTURES = {
     null: '',
     mine: mine,
-    1: `<p>1</p>`,
-    2: `<p>2</p>`,
-    3: `<p>3</p>`,
-    4: `<p>4</p>`,
-    5: `<p>5</p>`,
-    6: `<p>6</p>`,
-    7: `<p>7</p>`,
-    8: `<p>8</p>`,
+    1: `<p class='hidden numbers'>1</p>`,
+    2: `<p class='hidden numbers'>2</p>`,
+    3: `<p class='hidden numbers'>3</p>`,
+    4: `<p class='hidden numbers'>4</p>`,
+    5: `<p class='hidden numbers'>5</p>`,
+    6: `<p class='hidden numbers'>6</p>`,
+    7: `<p class='hidden numbers'>7</p>`,
+    8: `<p class='hidden numbers'>8</p>`,
 }
 
 
 let board;
 let bombLocations;
 let val;
-
+let state;
+let counter;
 
 ///Cached elements
 const reset = document.getElementById('reset')
-
+const boardLayout = document.getElementById('boardLayout')
+const message = document.querySelector('h2')
+const boxStyle = document.querySelector('.box')
 
 //// Event listeners
 reset.addEventListener('click', init)
+boardLayout.addEventListener('click', handleClick)
 
 
 
+function handleLoss(){
+message.innerText = 'You Lose!'
+
+}
+
+function handleWin(){
+message.innerText = 'You win!'
+}
 
 
+function handleMessage(){
+    if(state === 'playing') return
+    if(state === 'winner') handleWin()
+    if(state === 'loss') handleLoss()
+}
+
+
+
+function handleClick(e){
+if(state === 'loss' || state === 'winner') return
+console.log('magicNumber', (counter === board.flat().length - bombLocations.length))
+let choiceId = e.target;
+console.log(choiceId, 'choiceID')
+choiceId.classList.remove('hidden');
+counter++
+choiceId.style.backgroundColor = 'lightgrey';
+
+if(e.target.tagName === 'IMG'){
+    state = 'loss'
+    handleMessage()
+}
+
+if(counter === board.flat().length - bombLocations.length) {
+    state = 'winner'
+    handleWin()
+}
+
+}
 
 
 
 ////////FUNCTIONS
-init()
 
 
 
 function init(){
-
+counter = 0;
 board = [
     [null, null, null, null, null],
     [null, null, null, null, null],
@@ -53,10 +87,12 @@ board = [
     [null, null, null, null, null],
     [null, null, null, null, null],
 ]
-
+state = 'playing'
+document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
 render()
 }
 
+init()
 
 
 
@@ -92,7 +128,6 @@ bombLocations = []
         bombLocations.push(rando)
     }
 }
-    console.log(bombLocations.sort((a,b) => a - b), 'bombLocations')
 }
 
 
@@ -104,37 +139,7 @@ let newBoard = board.flat()
 let final = [];
 let innerArr = [];
 
-// for(let i =0; i<= bombLocations.length; i++){
-//     newBoard[bombLocations[i]] = 'mine'
-// }
-
 bombLocations.forEach(e => newBoard[e] = 'mine')
-
-///////////////// FOR LOOP THAT HANDLES BEFORE OR AFTER
-// for(let i =0; i< newBoard.length; i++){
-// if(newBoard[i] === 'mine'){
-//     if(newBoard[i - 1] !== 'mine'){
-//         if(newBoard[i - 1] === null){
-//             newBoard[i - 1] = 1
-//         } else {
-//             newBoard[i - 1]++
-//         }
-//     }
-// }
-
-// if(newBoard[i] === 'mine'){
-//     if(newBoard[i + 1] !== 'mine'){
-//         if(newBoard[i + 1] === null){
-//             newBoard[i + 1] = 1
-//         } else {
-//             newBoard[i + 1]++
-//         }
-//     }
-// }
-// }
-///////////////// FOR LOOP THAT HANDLES BEFORE OR AFTER
-
-console.log(newBoard, 'newBoard')
 
 while(newBoard.length){
     console.log('works')
@@ -147,11 +152,7 @@ while(newBoard.length){
 
 }
 
-console.log(final, 'final')
 board = final
-console.log(board, 'board')
-
-
 
 
 for(let i = 0; i< board.length; i++){
@@ -253,9 +254,6 @@ for(let i = 0; i< board.length; i++){
     
 
 }
-
-
-    console.log(board, 'after', i, j)
     
   
 }
