@@ -12,7 +12,7 @@
     color: #282727;
 }
 
-#board {
+#boardLayout {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
@@ -21,8 +21,8 @@
 
 .box {
     background-color: gray;
-    height: 8vmin;
-    width: 8vmin;
+    height: 12vmin;
+    width: 12vmin;
     border: 1px solid white;
     font-size: 2vmin;
     text-align: center;

@@ -12,6 +12,11 @@ const PICTURES = {
     1: `<p>1</p>`,
     2: `<p>2</p>`,
     3: `<p>3</p>`,
+    4: `<p>4</p>`,
+    5: `<p>5</p>`,
+    6: `<p>6</p>`,
+    7: `<p>7</p>`,
+    8: `<p>8</p>`,
 }
 
 
@@ -20,7 +25,21 @@ let bombLocations;
 let val;
 
 
+///Cached elements
+const reset = document.getElementById('reset')
 
+
+//// Event listeners
+reset.addEventListener('click', init)
+
+
+
+
+
+
+
+
+////////FUNCTIONS
 init()
 
 
@@ -53,7 +72,7 @@ function renderBoard(){
     handleBombLocations()
 
     for(let i = 0; i <= board.flat().length - 1; i++){
-      let val = document.querySelector(`#board :nth-child(${i + 1})`)
+      let val = document.querySelector(`#boardLayout :nth-child(${i + 1})`)
 
         val.innerHTML = PICTURES[board.flat()[i]]
  
@@ -174,27 +193,27 @@ for(let i = 0; i< board.length; i++){
     
     }
 
-    // /// Right Top Dia
-    // if(board[i][j] === 'mine' && i > 0){
-    //     if(board[i - 1][j + 1] !== 'mine'){
-    //         if(board[i - 1][j + 1] === null){
-    //             board[i - 1][j + 1] = 1
-    //         } else {
-    //             board[i - 1][j + 1]++
-    //         }
-    //     }
-    // }
+    /// Right Top Dia
+    if(board[i][j] === 'mine' && i > 0 && j < 4){
+        if(board[i - 1][j + 1] !== 'mine'){
+            if(board[i - 1][j + 1] === null){
+                board[i - 1][j + 1] = 1
+            } else {
+                board[i - 1][j + 1]++
+            }
+        }
+    }
 
-    //  /// Right Left Dia
-    //  if(board[i][j] === 'mine' && i > 0){
-    //     if(board[i - 1][j - 1] !== 'mine'){
-    //         if(board[i - 1][j - 1] === null){
-    //             board[i - 1][j - 1] = 1
-    //         } else {
-    //             board[i - 1][j - 1]++
-    //         }
-    //     }
-    // }
+     /// Right Left Dia
+     if(board[i][j] === 'mine' && i > 0 && j > 0){
+        if(board[i - 1][j - 1] !== 'mine'){
+            if(board[i - 1][j - 1] === null){
+                board[i - 1][j - 1] = 1
+            } else {
+                board[i - 1][j - 1]++
+            }
+        }
+    }
 
 
 
@@ -209,27 +228,27 @@ for(let i = 0; i< board.length; i++){
             }
         }
 
-    // /// Below Mine Right
-    // if(board[i][j] === 'mine' && i < 4){
-    //     if(board[i + 1][j + 1] !== 'mine'){
-    //         if(board[i + 1][j + 1] === null){
-    //             board[i + 1][j + 1] = 1
-    //         } else {
-    //             board[i + 1][j + 1]++
-    //         }
-    //     }
-    // }
+    /// Below Mine Right
+    if(board[i][j] === 'mine' && i < 4 && j < 4){
+        if(board[i + 1][j + 1] !== 'mine'){
+            if(board[i + 1][j + 1] === null){
+                board[i + 1][j + 1] = 1
+            } else {
+                board[i + 1][j + 1]++
+            }
+        }
+    }
 
     // /// Below Mine Left
-    // if(board[i][j] === 'mine' && i < 4 && j > 0){
-    //     if(board[i + 1][j - 1] !== 'mine'){
-    //         if(board[i + 1][j - 1] === null){
-    //             board[i + 1][j - 1] = 1
-    //         } else {
-    //             board[i + 1][j - 1]++
-    //         }
-    //     }
-    // }
+    if(board[i][j] === 'mine' && i < 4 && j > 0){
+        if(board[i + 1][j - 1] !== 'mine'){
+            if(board[i + 1][j - 1] === null){
+                board[i + 1][j - 1] = 1
+            } else {
+                board[i + 1][j - 1]++
+            }
+        }
+    }
 
     
 
