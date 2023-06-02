@@ -91,17 +91,29 @@ let innerArr = [];
 
 bombLocations.forEach(e => newBoard[e] = 'mine')
 
-for(let i =0; i< newBoard.length; i++){
-if(newBoard[i] === 'mine'){
-    if(newBoard[i - 1] !== 'mine'){
-        if(newBoard[i - 1] === null){
-            newBoard[i - 1] = 1
-        } else {
-            newBoard[i - 1]++
-        }
-    }
-}
-}
+///////////////// FOR LOOP THAT HANDLES BEFORE OR AFTER
+// for(let i =0; i< newBoard.length; i++){
+// if(newBoard[i] === 'mine'){
+//     if(newBoard[i - 1] !== 'mine'){
+//         if(newBoard[i - 1] === null){
+//             newBoard[i - 1] = 1
+//         } else {
+//             newBoard[i - 1]++
+//         }
+//     }
+// }
+
+// if(newBoard[i] === 'mine'){
+//     if(newBoard[i + 1] !== 'mine'){
+//         if(newBoard[i + 1] === null){
+//             newBoard[i + 1] = 1
+//         } else {
+//             newBoard[i + 1]++
+//         }
+//     }
+// }
+// }
+///////////////// FOR LOOP THAT HANDLES BEFORE OR AFTER
 
 console.log(newBoard, 'newBoard')
 
@@ -119,5 +131,115 @@ while(newBoard.length){
 console.log(final, 'final')
 board = final
 console.log(board, 'board')
+
+
+
+
+for(let i = 0; i< board.length; i++){
+    for(let j = 0; j< board.length; j++){
+
+        //// Left of Mine
+    if(board[i][j] === 'mine' && j > 0){
+        if(board[i][j - 1] !== 'mine'){
+            if(board[i][j - 1] === null){
+                board[i][j - 1] = 1
+            } else {
+                board[i][j - 1]++
+            }
+        }
+
+    }
+
+        /// Right of Mine
+    if(board[i][j] === 'mine' && j < 4){
+        if(board[i][j + 1] !== 'mine'){
+            if(board[i][j + 1] === null){
+                board[i][j + 1] = 1
+            } else {
+                board[i][j + 1]++
+            }
+        }
+
+    }
+
+        /// Top of Mine
+    if(board[i][j] === 'mine' && i > 0){
+            if(board[i - 1][j] !== 'mine'){
+                if(board[i - 1][j] === null){
+                    board[i - 1][j] = 1
+                } else {
+                    board[i - 1][j]++
+                }
+            }
+    
+    }
+
+    // /// Right Top Dia
+    // if(board[i][j] === 'mine' && i > 0){
+    //     if(board[i - 1][j + 1] !== 'mine'){
+    //         if(board[i - 1][j + 1] === null){
+    //             board[i - 1][j + 1] = 1
+    //         } else {
+    //             board[i - 1][j + 1]++
+    //         }
+    //     }
+    // }
+
+    //  /// Right Left Dia
+    //  if(board[i][j] === 'mine' && i > 0){
+    //     if(board[i - 1][j - 1] !== 'mine'){
+    //         if(board[i - 1][j - 1] === null){
+    //             board[i - 1][j - 1] = 1
+    //         } else {
+    //             board[i - 1][j - 1]++
+    //         }
+    //     }
+    // }
+
+
+
+
+     /// Below Mine
+     if(board[i][j] === 'mine' && i < 4){
+        if(board[i + 1][j] !== 'mine'){
+            if(board[i + 1][j] === null){
+                board[i + 1][j] = 1
+            } else {
+                board[i + 1][j]++
+            }
+        }
+
+    // /// Below Mine Right
+    // if(board[i][j] === 'mine' && i < 4){
+    //     if(board[i + 1][j + 1] !== 'mine'){
+    //         if(board[i + 1][j + 1] === null){
+    //             board[i + 1][j + 1] = 1
+    //         } else {
+    //             board[i + 1][j + 1]++
+    //         }
+    //     }
+    // }
+
+    // /// Below Mine Left
+    // if(board[i][j] === 'mine' && i < 4 && j > 0){
+    //     if(board[i + 1][j - 1] !== 'mine'){
+    //         if(board[i + 1][j - 1] === null){
+    //             board[i + 1][j - 1] = 1
+    //         } else {
+    //             board[i + 1][j - 1]++
+    //         }
+    //     }
+    // }
+
+    
+
+}
+
+
+    console.log(board, 'after', i, j)
+    
+  
+}
+}
 
 }
