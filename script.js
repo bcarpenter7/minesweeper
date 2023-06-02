@@ -1,17 +1,17 @@
-const mine = `<img class='hidden' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
+const mine = `<img class='' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
 
 
 const PICTURES = {
     null: '',
     mine: mine,
-    1: `<p class='hidden numbers'>1</p>`,
-    2: `<p class='hidden numbers'>2</p>`,
-    3: `<p class='hidden numbers'>3</p>`,
-    4: `<p class='hidden numbers'>4</p>`,
-    5: `<p class='hidden numbers'>5</p>`,
-    6: `<p class='hidden numbers'>6</p>`,
-    7: `<p class='hidden numbers'>7</p>`,
-    8: `<p class='hidden numbers'>8</p>`,
+    1: `<p class=' numbers'>1</p>`,
+    2: `<p class=' numbers'>2</p>`,
+    3: `<p class=' numbers'>3</p>`,
+    4: `<p class=' numbers'>4</p>`,
+    5: `<p class=' numbers'>5</p>`,
+    6: `<p class=' numbers'>6</p>`,
+    7: `<p class=' numbers'>7</p>`,
+    8: `<p class=' numbers'>8</p>`,
 }
 
 
@@ -69,6 +69,14 @@ if(counter === board.flat().length - bombLocations.length) {
     state = 'winner'
     handleWin()
 }
+
+// if(e.target.classList.contains('.nullConnected'))
+
+if(e.target.tagName === 'DIV'){
+    handleNULL(choiceId)
+}
+
+console.log(e.target.classList.contains('box'), 'CONTAINS IT')
 
 }
 
@@ -133,6 +141,117 @@ bombLocations = []
 
 
 
+
+function handleNULL(e) {
+    let newBoard = board.flat()
+    console.log(e, 'HANDLENULL', newBoard)
+    let idx = Number(e.id);
+    console.log(e, idx, newBoard[idx], 'WHERE DID I CLICK')
+
+
+
+//Left fill
+for(let i = 1; i < newBoard.length; i++){
+let edgeNums = [21, 16, 11, 6, 1]
+    if(newBoard[idx - i] !== null || edgeNums.indexOf(idx) > 0){
+    break;
+    } else {
+        document.getElementById(`${idx - i + 1}`).style.backgroundColor = 'lightgrey'
+    }
+
+}
+console.log(e, idx, newBoard[idx], 'WHERE DID I CLICK')
+
+//Right fill
+for(let i = 0; i < newBoard.length; i++){
+let edgeNums = [25, 20, 15, 10, 5]
+    if(newBoard[idx + i] !== null || edgeNums.indexOf(idx) > 0){
+    break;
+    } else {
+        document.getElementById(`${idx + i + 1}`).style.backgroundColor = 'lightgrey'
+    }
+
+}
+
+
+///Have to subtract one everywhere but when getting element because id of elements are not zero indexed whereas the newBoard is
+//Top fill
+for(let i = 1; i < 5; i++){
+    if(newBoard[idx - (5 * i) - 1] !== null){
+    break;
+    } else if (newBoard[idx - (5 * i) - 1] === null){
+        document.getElementById(`${idx - (5 * i)}`).style.backgroundColor = 'lightgrey'
+    }
+
+}
+
+//Top Right fill
+for(let i = 1; i < 5; i++){
+    if(newBoard[idx - (5 * i)] !== null){
+    break;
+    } else if (newBoard[idx - (5 * i)] === null){
+        document.getElementById(`${idx - (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
+    }
+
+}
+
+//Top Left fill
+for(let i = 1; i < 5; i++){
+    if(newBoard[idx - (5 * i) - 2] !== null){
+    break;
+    } else if (newBoard[idx - (5 * i) - 2] === null){
+        document.getElementById(`${idx - (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
+    }
+
+}
+
+
+//Bottom fill
+for(let i = 1; i < 5; i++){
+    console.log('TRYING', i)
+    if(newBoard[idx + (5 * i) - 1] !== null){
+    break;
+    } else if (newBoard[idx + (5 * i) - 1] === null){
+        document.getElementById(`${idx + (5 * i)}`).style.backgroundColor = 'lightgrey'
+    }
+}
+
+//Bottom Left Dia fill
+for(let i = 1; i < 5; i++){
+    console.log('TRYING', i)
+    if(newBoard[idx + (5 * i) - 2] !== null){
+    break;
+    } else if (newBoard[idx + (5 * i) - 2] === null){
+        document.getElementById(`${idx + (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
+    }
+}
+
+//Bottom Right Dia fill
+for(let i = 1; i < 5; i++){
+    console.log('TRYING', i)
+    if(newBoard[idx + (5 * i)] !== null){
+    break;
+    } else if (newBoard[idx + (5 * i)] === null){
+        document.getElementById(`${idx + (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
+    }
+}
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
 function handleBombLocations(){
 getBombLocations()
 
@@ -150,7 +269,6 @@ while(newBoard.length){
         final.push(innerArr)
         innerArr = []
     }
-
 }
 
 board = final
@@ -216,9 +334,6 @@ for(let i = 0; i< board.length; i++){
             }
         }
     }
-
-
-
 
      /// Below Mine
      if(board[i][j] === 'mine' && i < 4){
