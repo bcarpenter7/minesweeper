@@ -1,4 +1,4 @@
-const mine = `<img class='hidden' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
+const mine = `<img class='' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
 
 
 const PICTURES = {
@@ -16,6 +16,7 @@ const PICTURES = {
 
 
 let board;
+let left;
 let bombLocations;
 let val;
 let state;
@@ -54,30 +55,42 @@ function handleMessage(){
 
 function handleClick(e){
 if(state === 'loss' || state === 'winner') return
-console.log('magicNumber', (counter === board.flat().length - bombLocations.length))
 let choiceId = e.target;
-console.log(choiceId, 'choiceID')
 choiceId.classList.remove('hidden');
 counter++
 choiceId.style.backgroundColor = 'lightgrey';
-
+console.log(e.target.style.backgroundColor)
 if(e.target.tagName === 'IMG'){
     state = 'loss'
     handleMessage()
 }
 
-if(counter === board.flat().length - bombLocations.length) {
-    state = 'winner'
-    handleWin()
-}
 
-// if(e.target.classList.contains('.nullConnected'))
+console.log(e.target.parentNode.id, 'isit', e.target)
 
 if(e.target.tagName === 'DIV'){
     handleNULL(choiceId)
+    if(left.indexOf(Number(e.target.id)) < 0){
+        left.push(Number(e.target.id))
+        console.log(left.length, 'LEFT', left)
+    }
+    
 }
 
-console.log(e.target.classList.contains('box'), 'CONTAINS IT')
+
+if(e.target.tagName === 'P'){
+    choiceId.style.backgroundColor = 'lightgrey';
+    console.log(left.length, 'LEFTLEFT')
+    if(left.indexOf(e.target.parentNode.id) < 0){
+        left.push(e.target.parentNode.id)
+        console.log(left.length, 'LEFTLEFT', left)
+    }
+}
+
+if(left.length === 20) {
+    state = 'winner'
+    handleWin()
+}
 
 }
 
@@ -99,6 +112,7 @@ board = [
 state = 'playing'
 document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
 message.innerText = 'Sweep them mines!'
+left = []
 render()
 }
 
@@ -123,6 +137,8 @@ function renderBoard(){
         val.innerHTML = PICTURES[board.flat()[i]]
  
     }
+
+
 }
 
 
@@ -158,6 +174,10 @@ let edgeNums = [21, 16, 11, 6, 1]
     break;
     } else {
         document.getElementById(`${idx - i + 1}`).style.backgroundColor = 'lightgrey'
+        if(left.indexOf(Number(idx - i + 1)) < 0){
+        left.push(Number(idx - i + 1))
+        console.log(left)
+        }
     }
 
 }
@@ -170,6 +190,10 @@ let edgeNums = [25, 20, 15, 10, 5]
     break;
     } else {
         document.getElementById(`${idx + i + 1}`).style.backgroundColor = 'lightgrey'
+        if(left.indexOf(idx + i + 1) < 0){
+            left.push(Number(idx - i + 1))
+            console.log(left, 'LEFTLEFT')
+            }
     }
 
 }
@@ -183,6 +207,11 @@ for(let i = 1; i < 5; i++){
     break;
     } else if (newBoard[idx - (5 * i) - 1] === null){
         document.getElementById(`${idx - (5 * i)}`).style.backgroundColor = 'lightgrey'
+        if(left.indexOf(Number(idx - (5 * i))) < 0){
+            left.push(Number(idx - (5 * i)))
+            console.log(left, 'LEFTLEFT')
+            }
+        console.log(left.length, 'LEFTLEFT')
     }
 
 }
@@ -194,6 +223,11 @@ let edgeNums = [25, 20, 15, 10, 5]
     break;
     } else if (newBoard[idx - (5 * i)] === null){
         document.getElementById(`${idx - (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
+        if(left.indexOf(Number(idx - (5 * i) + 1)) < 0){
+            left.push(Number(idx - (5 * i) + 1))
+            console.log(left, 'LEFTLEFT')
+            }
+        console.log(left.length, 'LEFTLEFT')
     }
 
 }
@@ -207,6 +241,11 @@ console.log(idx, edgeNums.indexOf(idx) > 0)
     break;
     } else if (newBoard[idx - (5 * i) - 2] === null){
         document.getElementById(`${idx - (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
+        if(left.indexOf(Number(idx - (5 * i) - 1)) < 0){
+            left.push(Number(idx - (5 * i) - 1))
+            console.log(left, 'LEFTLEFT')
+            }
+        console.log(left.length, 'LEFTLEFT')
     }
 
 }
@@ -219,6 +258,11 @@ for(let i = 1; i < 5; i++){
     break;
     } else if (newBoard[idx + (5 * i) - 1] === null){
         document.getElementById(`${idx + (5 * i)}`).style.backgroundColor = 'lightgrey'
+        if(left.indexOf(Number(idx + (5 * i))) < 0){
+            left.push(Number(idx + (5 * i)))
+            console.log(left, 'LEFTLEFT')
+            }
+        console.log(left.length, 'LEFTLEFT')
     }
 }
 
@@ -230,6 +274,11 @@ for(let i = 1; i < 5; i++){
     break;
     } else if (newBoard[idx + (5 * i) - 2] === null){
         document.getElementById(`${idx + (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
+        if(left.indexOf(Number(idx + (5 * i) - 1)) < 0){
+            left.push(Number(idx + (5 * i) - 1))
+            console.log(left, 'LEFTLEFT')
+            }
+        console.log(left.length, 'LEFTLEFT')
     }
 }
 
@@ -241,6 +290,11 @@ for(let i = 1; i < 5; i++){
     break;
     } else if (newBoard[idx + (5 * i)] === null){
         document.getElementById(`${idx + (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
+        if(left.indexOf(Number(idx + (5 * i) + 1)) < 0){
+            left.push(Number(idx + (5 * i) + 1))
+            console.log(left, 'LEFTLEFT')
+            }
+        console.log(left.length, 'LEFTLEFT')
     }
 }
 
