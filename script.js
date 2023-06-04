@@ -431,12 +431,66 @@ for(let i = 0; i< board.length; i++){
         }
     }
 
-    
+    console.log(board, 'BOARDDDDD')
 
+
+   
 }
     
   
 }
 }
+
+let temp = board.flat()
+console.log(temp,'tmep')
+renderNumberColor(temp)
+}
+
+
+function renderNumberColor(temp){
+
+    /// Clears old classlist
+    for(let i = 0; i< temp.length; i++){
+        if(temp[i]){
+            document.getElementById(i + 1).classList.remove('numberOne')
+            document.getElementById(i + 1).classList.remove('numberTwo')
+            document.getElementById(i + 1).classList.remove('numberThree')
+            document.getElementById(i + 1).classList.remove('numberFour')
+            document.getElementById(i + 1).classList.remove('numberFive')
+            document.getElementById(i + 1).classList.remove('numberSix')
+            document.getElementById(i + 1).classList.remove('numberSeven')
+            document.getElementById(i + 1).classList.remove('numberEight')
+            }
+        }
+    
+    /// Adds color based on numbers
+    for(let i = 0; i< temp.length; i++){
+        // console.log(temp)
+        if(temp[i] === 1){
+            document.getElementById(i + 1).classList.add('numberOne')
+        }
+        if(temp[i] === 2){
+            document.getElementById(i + 1).classList.add('numberTwo')
+        }
+        if(temp[i] === 3){
+            document.getElementById(i + 1).classList.add('numberThree')
+        }
+        if(temp[i] === 4){
+            document.getElementById(i + 1).classList.add('numberFour')
+        }
+        if(temp[i] === 5){
+            document.getElementById(i + 1).classList.add('numberFive')
+        }
+        if(temp[i] === 6){
+            document.getElementById(i + 1).classList.add('numberSix')
+        }
+        if(temp[i] === 7){
+            document.getElementById(i + 1).classList.add('numberSeven')
+        }
+        if(temp[i] === 8){
+            document.getElementById(i + 1).classList.add('numberEight')
+        }
+
+    }
 
 }

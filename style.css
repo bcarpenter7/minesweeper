@@ -45,3 +45,35 @@ header {
 
 
 
+.numberOne {
+    color: blue;
+}
+
+.numberTwo {
+    color: green;
+}
+
+.numberThree {
+    color: red;
+}
+
+.numberFour {
+    color: black;
+}
+
+.numberFive {
+    color: darkred;
+}
+
+.numberSix {
+    color: yellow;
+}
+
+.numberSeven {
+    color: purple;
+}
+
+.numberEight {
+    color: pink;
+}
+
