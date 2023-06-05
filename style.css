@@ -108,23 +108,21 @@ header {
 }
 
 #choiceShovel {
-    /* border: 2px solid black; */
+    text-align: center;
     border-radius: 4px;
     padding: 1vmin;
 }
 
 #choiceFlag {
-    /* border: 2px solid black; */
+    text-align: center;
     border-radius: 4px;
     padding: 1vmin;
 }
 
 .currentChoice {
-    /* height: 15vmin; */
     border: 7px solid green;
 }
 
 .notChoice {
-    /* height: 10vmin; */
     border: 2px solid red;
 }
