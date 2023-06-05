@@ -26,7 +26,7 @@ h1 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    margin-top: 5vmin;
+    margin-top: 4vmin;
     gap: .2vmin;
 }
 
@@ -139,5 +139,5 @@ header {
     border-radius: 100px;
     font-size: 5vmin;
     padding: 2vmin;
-    margin-top: 5vmin;
+    margin-top: 2vmin;
 }
