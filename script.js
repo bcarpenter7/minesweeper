@@ -1,6 +1,6 @@
-const mine = `<img class='hidden' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
-
-
+const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
+const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='100px'>`
+const shovel = `<img src='https://cdn.onlinewebfonts.com/svg/img_535769.png' height='100px'`
 const PICTURES = {
     null: '',
     mine: mine,
@@ -12,6 +12,8 @@ const PICTURES = {
     6: `<p class='hidden numbers'>6</p>`,
     7: `<p class='hidden numbers'>7</p>`,
     8: `<p class='hidden numbers'>8</p>`,
+    protect: flag,
+    digging: shovel
 }
 
 
@@ -20,17 +22,37 @@ let left;
 let bombLocations;
 let val;
 let state;
-let counter;
+let flagCount;
+let choiceOfItem;
 
 ///Cached elements
 const reset = document.getElementById('reset')
 const boardLayout = document.getElementById('boardLayout')
 const message = document.querySelector('h2')
 const boxStyle = document.querySelector('.box')
+const shovelItem = document.getElementById('shovelItem')
+const flagItem = document.getElementById('flagItem')
+
 
 //// Event listeners
 reset.addEventListener('click', init)
-boardLayout.addEventListener('click', handleClick)
+boardLayout.addEventListener('click', handleClickChoice)
+// boardLayout.addEventListener('click', handleClickFlag)
+shovelItem.addEventListener('click', shovelClick)
+flagItem.addEventListener('click', flagClick)
+
+
+
+function handleClickChoice(e){
+    console.log(choiceOfItem, 'CHOICE')
+    if(choiceOfItem === 'shovel'){
+         handleClickShovel(e) 
+    } else if(choiceOfItem === 'flag') { 
+        handleClickFlag(e)
+    }
+}
+
+
 
 
 
@@ -40,9 +62,11 @@ message.innerText = 'You Lose!'
 document.querySelectorAll('.hidden').forEach(e => e.classList.remove('hidden'))
 }
 
+
 function handleWin(){
 message.innerText = 'You win!'
 }
+
 
 
 function handleMessage(){
@@ -52,21 +76,30 @@ function handleMessage(){
 }
 
 
+function shovelClick(){
+choiceOfItem = 'shovel'
+}
 
-function handleClick(e){
-if(state === 'loss' || state === 'winner') return
-let choiceId = e.target;
-choiceId.classList.remove('hidden');
-counter++
-choiceId.style.backgroundColor = 'lightgrey';
-console.log(e.target.style.backgroundColor)
-if(e.target.tagName === 'IMG'){
-    state = 'loss'
-    handleMessage()
+function flagClick(){
+choiceOfItem = 'flag'
 }
 
 
-console.log(e.target.parentNode.id, 'isit', e.target)
+
+function handleClickShovel(e){
+if(state === 'loss' || state === 'winner') return
+if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
+if(choiceOfItem === 'flag') return
+let choiceId = e.target;
+choiceId.classList.remove('hidden');
+choiceId.style.backgroundColor = 'lightgrey';
+console.log(e.target.style.backgroundColor)
+
+
+if(e.target.id === 'mine'){
+    state = 'loss'
+    handleMessage()
+}
 
 if(e.target.tagName === 'DIV'){
     handleNULL(choiceId)
@@ -76,7 +109,6 @@ if(e.target.tagName === 'DIV'){
     }
     
 }
-
 
 if(e.target.tagName === 'P'){
     choiceId.style.backgroundColor = 'lightgrey';
@@ -91,10 +123,60 @@ if(left.length === 20) {
     state = 'winner'
     handleWin()
 }
-
 }
 
 
+
+
+//////////FIX THIS FUNCTION
+function handleClickFlag(e){
+    if(state === 'loss' || state === 'winner') return
+    if(choiceOfItem === 'shovel') return
+    console.log(e.target, 'WHTAT IS IT JDKLFJ:LSDJFKLJSDLK:FJSDKL:LFKSDJKL:')
+    
+    let choiceId = e.target;
+    console.log(choiceId, 'CHOICE ID')
+    /// Handles unclick of flag
+    if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'){
+        if(e.target.id === 'mine'){
+            e.target.src = 'https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png'
+            e.target.classList.add('hidden')
+            return
+        } else if (e.target.id === 'number') {
+                // attaches to the parentNode (e.target's classList which stores the old value for that square (ex: 2), PICTURES uses that value to replace the lost html)
+            e.target.parentNode.innerHTML = PICTURES[e.target.classList[0]]
+            return
+        } else if (e.target.id === 'box'){
+            console.log('triggered')
+            e.target.parentNode.innerHTML =  `<div id=${e.target.class} class="box" style='background-color:gray;'></div>`
+            return
+        }
+        // choiceId.innerHTML = ''
+        console.log(choiceId.innerHTML, choiceId, 'happend')
+        e.target.remove(e.target)
+}
+
+/// Handles first click
+if(e.target.style.backgroundColor === 'lightgrey') return
+    console.log(choiceId.innerText, 'ATSTART', choiceId)
+    choiceId.classList.remove('hidden');
+    choiceId.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'
+
+    if(e.target.tagName === 'IMG'){
+        if(flagCount.indexOf(choiceId.id) > -1){
+        flagCount.push(choiceId.id)
+        }
+    } else if(e.target.tagName === 'P'){
+        e.target.parentNode.innerHTML = `<img id='number' class='${e.target.innerText}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='100px'>`
+    } else if (e.target.tagName === 'DIV' && e.target.style.backgroundColor === 'gray'){
+        let temp = e.target.id
+        e.target.innerHTML = `<img id='box' class='${temp}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='100px'>`
+    }
+
+    
+    }
+    
+    
 
 ////////FUNCTIONS
 
@@ -113,6 +195,8 @@ state = 'playing'
 document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
 message.innerText = 'Sweep them mines!'
 left = []
+flagCount = [];
+choiceOfItem = 'shovel'
 render()
 }
 
@@ -162,10 +246,11 @@ bombLocations = []
 }
 }
 
-
+'works'
 
 
 function handleNULL(e) {
+
     let newBoard = board.flat()
     console.log(e, 'HANDLENULL', newBoard)
     let idx = Number(e.id);
@@ -326,7 +411,6 @@ let innerArr = [];
 bombLocations.forEach(e => newBoard[e] = 'mine')
 
 while(newBoard.length){
-    console.log('works')
     innerArr.push(newBoard.shift())
     console.log(innerArr)
     if(innerArr.length === 5){
@@ -430,9 +514,6 @@ for(let i = 0; i< board.length; i++){
             }
         }
     }
-
-    console.log(board, 'BOARDDDDD')
-
 
    
 }

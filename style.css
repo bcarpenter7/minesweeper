@@ -19,6 +19,16 @@
     margin-top: 5vmin;
 }
 
+
+#flag1 {
+    /* grid-column: 1;
+    grid-row: 1; */
+    height: 100px;
+    width: 100px;
+    z-index: 100;
+}
+
+
 .box {
     background-color: gray;
     height: 12vmin;
@@ -42,8 +52,6 @@ header {
 .hidden {
     opacity: 0;
 }
-
-
 
 .numberOne {
     color: blue;
@@ -75,5 +83,15 @@ header {
 
 .numberEight {
     color: pink;
+}
+
+#choices {
+    display: flex;
+    align-items: center;
+}
+
+
+#flagItem {
+    z-index: 100;
 }
 
