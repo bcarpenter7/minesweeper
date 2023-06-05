@@ -12,6 +12,11 @@
     color: #282727;
 }
 
+h1 {
+    font-size: 10vmin;
+    margin-top: 10vmin;
+}
+
 #boardLayout {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
