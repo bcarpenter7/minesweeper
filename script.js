@@ -30,6 +30,8 @@ const reset = document.getElementById('reset')
 const boardLayout = document.getElementById('boardLayout')
 const message = document.querySelector('h2')
 const boxStyle = document.querySelector('.box')
+
+
 const shovelItem = document.getElementById('shovelItem')
 const flagItem = document.getElementById('flagItem')
 
