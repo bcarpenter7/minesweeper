@@ -63,7 +63,7 @@ board = [
 ]
 state = 'playing'
 document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
-message.innerText = 'Avoid digging the hidden mines! Place flags on locations with mines. Use the shovel to dig safe locations.'
+message.innerText = 'Avoid digging the hidden mines!'
 clickedSquareIndexes = []
 choiceOfItem = 'shovel'
 render()
