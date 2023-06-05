@@ -1,4 +1,4 @@
-const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
+const mine = `<img class='' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
 const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
 const shovel = `<img src='https://cdn.onlinewebfonts.com/svg/img_535769.png' height='60vmin'`
 const PICTURES = {
@@ -106,10 +106,10 @@ if(e.target.id === 'mine'){
 
 if(e.target.tagName === 'DIV'){
     handleNULL(choiceId)
-    // if(left.indexOf(Number(e.target.id)) < 0){
-    //     left.push(Number(e.target.id))
-    //     console.log(left.length, 'LEFT', left)
-    // }
+    if(left.indexOf(Number(e.target.id)) < 0){
+        left.push(Number(e.target.id))
+        console.log(left.length, 'LEFT', left)
+    }
     
 }
 
