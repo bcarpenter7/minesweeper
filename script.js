@@ -21,6 +21,7 @@ let clickedSquareIndexes;
 let bombLocations;
 let state;
 let choiceOfItem;
+let firstClickLocation;
 
 ///Cached elements
 const reset = document.getElementById('reset')
@@ -29,17 +30,12 @@ const message = document.querySelector('h2')
 const boxStyle = document.querySelector('.box')
 const choiceShovelDiv = document.getElementById('choiceShovel')
 const choiceFlagDiv = document.getElementById('choiceFlag')
-// const shovelItem = document.getElementById('shovelItem')
-// const flagItem = document.getElementById('flagItem')
-
 
 //// Event listeners
 reset.addEventListener('click', init)
 boardLayout.addEventListener('click', handleClickChoice)
-// shovelItem.addEventListener('click', shovelClick)
-// flagItem.addEventListener('click', flagClick)
-choiceShovelDiv.addEventListener('click', shovelClick)
-choiceFlagDiv.addEventListener('click', flagClick)
+choiceShovelDiv.addEventListener('click', handleShovelClick)
+choiceFlagDiv.addEventListener('click', handleFlagClick)
 
 
 
@@ -65,7 +61,8 @@ state = 'playing'
 document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
 message.innerText = 'Avoid digging the hidden mines!'
 clickedSquareIndexes = []
-choiceOfItem = 'shovel'
+choiceOfItem = 'shovel';
+firstClickLocation = [];
 render()
 }
 
@@ -79,12 +76,8 @@ function renderBoard(){
 
     for(let i = 0; i <= board.flat().length - 1; i++){
       let boardLocations = document.querySelector(`#boardLayout :nth-child(${i + 1})`)
-
         boardLocations.innerHTML = PICTURES[board.flat()[i]]
- 
     }
-
-
 }
 
 
@@ -105,7 +98,6 @@ function renderItemIcon(){
 
 
 function handleClickChoice(e){
-    console.log(choiceOfItem, 'CHOICE')
     if(choiceOfItem === 'shovel'){
          handleClickShovel(e) 
     } else if(choiceOfItem === 'flag') { 
@@ -114,49 +106,50 @@ function handleClickChoice(e){
 }
 
 function handleClickShovel(e){
-    console.log(e.target.tagName)
     if(state === 'loss' || state === 'winner') return
     if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
     if(choiceOfItem === 'flag') return
-    let choiceId = e.target;
-    choiceId.classList.remove('hidden');
-    choiceId.style.backgroundColor = 'lightgrey';
-    console.log(e.target.style.backgroundColor)
+    if(e.target.id === 'mine' && firstClickLocation.length < 1){
+        render()
+        return
+    }
+    firstClickLocation.push(e.target.id)
+    console.log(e.target, "this info", e.target.id, firstClickLocation)
+    e.target.classList.remove('hidden');
+    e.target.style.backgroundColor = 'lightgrey';
     
-    
+    //// If a shovel hits a mine
     if(e.target.id === 'mine'){
         state = 'loss'
         handleMessage()
     }
-    
+    /// If a shovel hits a blank space
     if(e.target.tagName === 'DIV'){
-        handleNULL(choiceId)
+        handleNULL(e.target)
         if(clickedSquareIndexes.indexOf(Number(e.target.id)) < 0){
             clickedSquareIndexes.push(Number(e.target.id))
             console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
         }
         
     }
-    
+    /// If a shovel hits a number space
     if(e.target.tagName === 'P'){
-        choiceId.style.backgroundColor = 'lightgrey';
+        e.target.style.backgroundColor = 'lightgrey';
         console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
         if(clickedSquareIndexes.indexOf(e.target.parentNode.id) < 0){
             clickedSquareIndexes.push(e.target.parentNode.id)
             console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
         }
     }
-    
+    /// If the clicked space results in the 20 nonmine spaces being clicked
     if(clickedSquareIndexes.length === 20) {
         state = 'winner'
         handleWin()
     }
     }
-    
 
-//////////FIX THIS FUNCTION
+
 function handleClickFlag(e){
-    console.log(e.target.tagName)
     if(state === 'loss' || state === 'winner') return
     if(choiceOfItem === 'shovel') return
     /// Handles unclick of flag
@@ -170,28 +163,21 @@ function handleClickFlag(e){
             e.target.parentNode.innerHTML = PICTURES[e.target.classList[0]]
             return
         } else if (e.target.classList[0] === 'box'){
-            console.log(e.target)
-            console.log(e.target.parentNode, 'This', e.target.id, e.target.classList[0])
             e.target.parentNode.innerHTML =  `<div id=${e.target.id} class="box" style='background-color:gray;'></div>`
             return
         }
-        // e.target.remove(e.target)
 }
 
 /// Handles first click
-if(e.target.style.backgroundColor === 'lightgrey') return
+if(e.target.style.backgroundColor === 'lightgrey') return //// if it has already been clicked before
+        /// if first click on img
     e.target.classList.remove('hidden');
     e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'
-    if(e.target.tagName === 'IMG'){
-        // if(flagCount.indexOf(e.target.id) > -1){
-        // flagCount.push(e.target.id)
-        // }
-    } else if(e.target.tagName === 'P'){
+        /// if first click on number and then first click on blank space
+    if(e.target.tagName === 'P'){
         e.target.parentNode.innerHTML = `<img id='number' class='${e.target.innerText}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
     } else if (e.target.tagName === 'DIV' && e.target.style.backgroundColor === 'gray'){
-        let tempId = e.target.id
-        let tempClass = e.target.classList[0]
-        e.target.innerHTML = `<img id='${tempId}' class='${tempClass}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' >`
+        e.target.innerHTML = `<img id='${e.target.id}' class='${e.target.classList[0]}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' >`
     }
     }
 
@@ -215,20 +201,16 @@ function handleMessage(){
     if(state === 'loss') handleLoss()
 }
 
-
-function shovelClick(){
+/// Changes item to shovel and renders box around it
+function handleShovelClick(){
 choiceOfItem = 'shovel'
 renderItemIcon()
 }
-
-function flagClick(){
+/// Changes item to flag and renders box around it
+function handleFlagClick(){
 choiceOfItem = 'flag'
 renderItemIcon()
 }
-
-
-
-
 
 
 function getBombLocations(){
@@ -239,9 +221,8 @@ bombLocations = []
         bombLocations.push(rando)
     }
 }
+console.log(bombLocations, 'BOMBLOCATIONS')
 }
-
-'works'
 
 
 function handleNULL(e) {
@@ -398,6 +379,15 @@ for(let i = 1; i < 5; i++){
 
 function handleBombLocations(){
 getBombLocations()
+
+/// board is redeclared here in case of a bomb on first click. Automatically allows a redo on the board organization to avoid 10 bombs
+board = [
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+]
 
 let newBoard = board.flat()
 let final = [];
