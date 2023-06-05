@@ -1,6 +1,5 @@
 const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
 const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
-const shovel = `<img src='https://cdn.onlinewebfonts.com/svg/img_535769.png' height='60vmin'`
 const PICTURES = {
     null: '',
     mine: mine,
@@ -13,17 +12,14 @@ const PICTURES = {
     7: `<p class='hidden numbers'>7</p>`,
     8: `<p class='hidden numbers'>8</p>`,
     protect: flag,
-    digging: shovel
 }
 
 
 
 let board;
-let left;
+let clickedSquareIndexes;
 let bombLocations;
-let val;
 let state;
-let flagCount;
 let choiceOfItem;
 
 ///Cached elements
@@ -33,16 +29,63 @@ const message = document.querySelector('h2')
 const boxStyle = document.querySelector('.box')
 const choiceShovelDiv = document.getElementById('choiceShovel')
 const choiceFlagDiv = document.getElementById('choiceFlag')
-const shovelItem = document.getElementById('shovelItem')
-const flagItem = document.getElementById('flagItem')
+// const shovelItem = document.getElementById('shovelItem')
+// const flagItem = document.getElementById('flagItem')
 
 
 //// Event listeners
 reset.addEventListener('click', init)
 boardLayout.addEventListener('click', handleClickChoice)
-shovelItem.addEventListener('click', shovelClick)
-flagItem.addEventListener('click', flagClick)
+// shovelItem.addEventListener('click', shovelClick)
+// flagItem.addEventListener('click', flagClick)
+choiceShovelDiv.addEventListener('click', shovelClick)
+choiceFlagDiv.addEventListener('click', flagClick)
 
+
+
+
+
+    
+    
+////////FUNCTIONS
+
+
+init()
+
+function init(){
+counter = 0;
+board = [
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+    [null, null, null, null, null],
+]
+state = 'playing'
+document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
+message.innerText = 'Avoid digging the hidden mines! Place flags on locations with mines. Use the shovel to dig safe locations.'
+clickedSquareIndexes = []
+choiceOfItem = 'shovel'
+render()
+}
+
+function render(){
+    renderBoard()
+}
+
+
+function renderBoard(){
+    handleBombLocations()
+
+    for(let i = 0; i <= board.flat().length - 1; i++){
+      let boardLocations = document.querySelector(`#boardLayout :nth-child(${i + 1})`)
+
+        boardLocations.innerHTML = PICTURES[board.flat()[i]]
+ 
+    }
+
+
+}
 
 
 function renderItemIcon(){
@@ -70,6 +113,87 @@ function handleClickChoice(e){
     }
 }
 
+function handleClickShovel(e){
+    console.log(e.target.tagName)
+    if(state === 'loss' || state === 'winner') return
+    if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
+    if(choiceOfItem === 'flag') return
+    let choiceId = e.target;
+    choiceId.classList.remove('hidden');
+    choiceId.style.backgroundColor = 'lightgrey';
+    console.log(e.target.style.backgroundColor)
+    
+    
+    if(e.target.id === 'mine'){
+        state = 'loss'
+        handleMessage()
+    }
+    
+    if(e.target.tagName === 'DIV'){
+        handleNULL(choiceId)
+        if(clickedSquareIndexes.indexOf(Number(e.target.id)) < 0){
+            clickedSquareIndexes.push(Number(e.target.id))
+            console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
+        }
+        
+    }
+    
+    if(e.target.tagName === 'P'){
+        choiceId.style.backgroundColor = 'lightgrey';
+        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
+        if(clickedSquareIndexes.indexOf(e.target.parentNode.id) < 0){
+            clickedSquareIndexes.push(e.target.parentNode.id)
+            console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
+        }
+    }
+    
+    if(clickedSquareIndexes.length === 20) {
+        state = 'winner'
+        handleWin()
+    }
+    }
+    
+
+//////////FIX THIS FUNCTION
+function handleClickFlag(e){
+    console.log(e.target.tagName)
+    if(state === 'loss' || state === 'winner') return
+    if(choiceOfItem === 'shovel') return
+    /// Handles unclick of flag
+    if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'){
+        if(e.target.id === 'mine'){
+            e.target.src = 'https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png'
+            e.target.classList.add('hidden')
+            return
+        } else if (e.target.id === 'number') {
+                // attaches to the parentNode (e.target's classList which stores the old value for that square (ex: 2), PICTURES uses that value to replace the lost html)
+            e.target.parentNode.innerHTML = PICTURES[e.target.classList[0]]
+            return
+        } else if (e.target.classList[0] === 'box'){
+            console.log(e.target)
+            console.log(e.target.parentNode, 'This', e.target.id, e.target.classList[0])
+            e.target.parentNode.innerHTML =  `<div id=${e.target.id} class="box" style='background-color:gray;'></div>`
+            return
+        }
+        // e.target.remove(e.target)
+}
+
+/// Handles first click
+if(e.target.style.backgroundColor === 'lightgrey') return
+    e.target.classList.remove('hidden');
+    e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'
+    if(e.target.tagName === 'IMG'){
+        // if(flagCount.indexOf(e.target.id) > -1){
+        // flagCount.push(e.target.id)
+        // }
+    } else if(e.target.tagName === 'P'){
+        e.target.parentNode.innerHTML = `<img id='number' class='${e.target.innerText}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
+    } else if (e.target.tagName === 'DIV' && e.target.style.backgroundColor === 'gray'){
+        let tempId = e.target.id
+        let tempClass = e.target.classList[0]
+        e.target.innerHTML = `<img id='${tempId}' class='${tempClass}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' >`
+    }
+    }
 
 
 function handleLoss(){
@@ -104,146 +228,6 @@ renderItemIcon()
 
 
 
-function handleClickShovel(e){
-console.log(e.target.tagName)
-if(state === 'loss' || state === 'winner') return
-if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
-if(choiceOfItem === 'flag') return
-let choiceId = e.target;
-choiceId.classList.remove('hidden');
-choiceId.style.backgroundColor = 'lightgrey';
-console.log(e.target.style.backgroundColor)
-
-
-if(e.target.id === 'mine'){
-    state = 'loss'
-    handleMessage()
-}
-
-if(e.target.tagName === 'DIV'){
-    handleNULL(choiceId)
-    if(left.indexOf(Number(e.target.id)) < 0){
-        left.push(Number(e.target.id))
-        console.log(left.length, 'LEFT', left)
-    }
-    
-}
-
-if(e.target.tagName === 'P'){
-    choiceId.style.backgroundColor = 'lightgrey';
-    console.log(left.length, 'LEFTLEFT')
-    if(left.indexOf(e.target.parentNode.id) < 0){
-        left.push(e.target.parentNode.id)
-        console.log(left.length, 'LEFTLEFT', left)
-    }
-}
-
-if(left.length === 20) {
-    state = 'winner'
-    handleWin()
-}
-}
-
-
-
-
-//////////FIX THIS FUNCTION
-function handleClickFlag(e){
-    console.log(e.target.tagName)
-    if(state === 'loss' || state === 'winner') return
-    if(choiceOfItem === 'shovel') return
-    /// Handles unclick of flag
-    if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'){
-        if(e.target.id === 'mine'){
-            e.target.src = 'https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png'
-            e.target.classList.add('hidden')
-            return
-        } else if (e.target.id === 'number') {
-                // attaches to the parentNode (e.target's classList which stores the old value for that square (ex: 2), PICTURES uses that value to replace the lost html)
-            e.target.parentNode.innerHTML = PICTURES[e.target.classList[0]]
-            return
-        } else if (e.target.classList[0] === 'box'){
-            console.log(e.target)
-            console.log(e.target.parentNode, 'This', e.target.id, e.target.classList[0])
-            e.target.parentNode.innerHTML =  `<div id=${e.target.id} class="box" style='background-color:gray;'></div>`
-            return
-        }
-        // e.target.remove(e.target)
-}
-
-/// Handles first click
-if(e.target.style.backgroundColor === 'lightgrey') return
-    e.target.classList.remove('hidden');
-    e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'
-    if(e.target.tagName === 'IMG'){
-        if(flagCount.indexOf(e.target.id) > -1){
-        flagCount.push(e.target.id)
-        }
-    } else if(e.target.tagName === 'P'){
-        e.target.parentNode.innerHTML = `<img id='number' class='${e.target.innerText}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
-    } else if (e.target.tagName === 'DIV' && e.target.style.backgroundColor === 'gray'){
-        let tempId = e.target.id
-        let tempClass = e.target.classList[0]
-        e.target.innerHTML = `<img id='${tempId}' class='${tempClass}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' >`
-    }
-    }
-    
-    
-////////FUNCTIONS
-
-
-
-function init(){
-counter = 0;
-board = [
-    [null, null, null, null, null],
-    [null, null, null, null, null],
-    [null, null, null, null, null],
-    [null, null, null, null, null],
-    [null, null, null, null, null],
-]
-state = 'playing'
-document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
-message.innerText = 'Sweep them mines!'
-left = []
-flagCount = [];
-choiceOfItem = 'shovel'
-render()
-}
-
-
-
-
-
-
-
-init()
-
-
-
-function render(){
-    renderBoard()
-}
-
-
-
-
-
-function renderBoard(){
-    handleBombLocations()
-
-    for(let i = 0; i <= board.flat().length - 1; i++){
-      let val = document.querySelector(`#boardLayout :nth-child(${i + 1})`)
-
-        val.innerHTML = PICTURES[board.flat()[i]]
- 
-    }
-
-
-}
-
-
-
 
 
 
@@ -269,16 +253,16 @@ function handleNULL(e) {
 
 
 
-//Left fill
+//clickedSquareIndexes fill
 for(let i = 1; i < newBoard.length; i++){
 let edgeNums = [21, 16, 11, 6, 1]
     if(newBoard[idx - i] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else {
         document.getElementById(`${idx - i + 1}`).style.backgroundColor = 'lightgrey'
-        if(left.indexOf(Number(idx - i + 1)) < 0){
-        left.push(Number(idx - i + 1))
-        console.log(left)
+        if(clickedSquareIndexes.indexOf(Number(idx - i + 1)) < 0){
+        clickedSquareIndexes.push(Number(idx - i + 1))
+        console.log(clickedSquareIndexes)
         }
     }
 
@@ -292,9 +276,9 @@ let edgeNums = [25, 20, 15, 10, 5]
     break;
     } else {
         document.getElementById(`${idx + i + 1}`).style.backgroundColor = 'lightgrey'
-        if(left.indexOf(idx + i + 1) < 0){
-            left.push(Number(idx - i + 1))
-            console.log(left, 'LEFTLEFT')
+        if(clickedSquareIndexes.indexOf(idx + i + 1) < 0){
+            clickedSquareIndexes.push(Number(idx - i + 1))
+            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
             }
     }
 
@@ -309,11 +293,11 @@ for(let i = 1; i < 5; i++){
     break;
     } else if (newBoard[idx - (5 * i) - 1] === null){
         document.getElementById(`${idx - (5 * i)}`).style.backgroundColor = 'lightgrey'
-        if(left.indexOf(Number(idx - (5 * i))) < 0){
-            left.push(Number(idx - (5 * i)))
-            console.log(left, 'LEFTLEFT')
+        if(clickedSquareIndexes.indexOf(Number(idx - (5 * i))) < 0){
+            clickedSquareIndexes.push(Number(idx - (5 * i)))
+            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
             }
-        console.log(left.length, 'LEFTLEFT')
+        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 
 }
@@ -325,16 +309,16 @@ let edgeNums = [25, 20, 15, 10, 5]
     break;
     } else if (newBoard[idx - (5 * i)] === null){
         document.getElementById(`${idx - (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
-        if(left.indexOf(Number(idx - (5 * i) + 1)) < 0){
-            left.push(Number(idx - (5 * i) + 1))
-            console.log(left, 'LEFTLEFT')
+        if(clickedSquareIndexes.indexOf(Number(idx - (5 * i) + 1)) < 0){
+            clickedSquareIndexes.push(Number(idx - (5 * i) + 1))
+            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
             }
-        console.log(left.length, 'LEFTLEFT')
+        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 
 }
 
-//Top Left fill
+//Top clickedSquareIndexes fill
 for(let i = 1; i < 5; i++){
     
 let edgeNums = [21, 16, 11, 6, 1]
@@ -343,11 +327,11 @@ console.log(idx, edgeNums.indexOf(idx) > 0)
     break;
     } else if (newBoard[idx - (5 * i) - 2] === null){
         document.getElementById(`${idx - (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
-        if(left.indexOf(Number(idx - (5 * i) - 1)) < 0){
-            left.push(Number(idx - (5 * i) - 1))
-            console.log(left, 'LEFTLEFT')
+        if(clickedSquareIndexes.indexOf(Number(idx - (5 * i) - 1)) < 0){
+            clickedSquareIndexes.push(Number(idx - (5 * i) - 1))
+            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
             }
-        console.log(left.length, 'LEFTLEFT')
+        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 
 }
@@ -360,15 +344,15 @@ for(let i = 1; i < 5; i++){
     break;
     } else if (newBoard[idx + (5 * i) - 1] === null){
         document.getElementById(`${idx + (5 * i)}`).style.backgroundColor = 'lightgrey'
-        if(left.indexOf(Number(idx + (5 * i))) < 0){
-            left.push(Number(idx + (5 * i)))
-            console.log(left, 'LEFTLEFT')
+        if(clickedSquareIndexes.indexOf(Number(idx + (5 * i))) < 0){
+            clickedSquareIndexes.push(Number(idx + (5 * i)))
+            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
             }
-        console.log(left.length, 'LEFTLEFT')
+        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 }
 
-//Bottom Left Dia fill
+//Bottom clickedSquareIndexes Dia fill
 for(let i = 1; i < 5; i++){
     let edgeNums = [21, 16, 11, 6, 1]
     console.log('TRYING', i)
@@ -376,11 +360,11 @@ for(let i = 1; i < 5; i++){
     break;
     } else if (newBoard[idx + (5 * i) - 2] === null){
         document.getElementById(`${idx + (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
-        if(left.indexOf(Number(idx + (5 * i) - 1)) < 0){
-            left.push(Number(idx + (5 * i) - 1))
-            console.log(left, 'LEFTLEFT')
+        if(clickedSquareIndexes.indexOf(Number(idx + (5 * i) - 1)) < 0){
+            clickedSquareIndexes.push(Number(idx + (5 * i) - 1))
+            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
             }
-        console.log(left.length, 'LEFTLEFT')
+        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 }
 
@@ -392,11 +376,11 @@ for(let i = 1; i < 5; i++){
     break;
     } else if (newBoard[idx + (5 * i)] === null){
         document.getElementById(`${idx + (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
-        if(left.indexOf(Number(idx + (5 * i) + 1)) < 0){
-            left.push(Number(idx + (5 * i) + 1))
-            console.log(left, 'LEFTLEFT')
+        if(clickedSquareIndexes.indexOf(Number(idx + (5 * i) + 1)) < 0){
+            clickedSquareIndexes.push(Number(idx + (5 * i) + 1))
+            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
             }
-        console.log(left.length, 'LEFTLEFT')
+        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 }
 
@@ -436,7 +420,7 @@ board = final
 for(let i = 0; i< board.length; i++){
     for(let j = 0; j< board.length; j++){
 
-        //// Left of Mine
+        //// clickedSquareIndexes of Mine
     if(board[i][j] === 'mine' && j > 0){
         if(board[i][j - 1] !== 'mine'){
             if(board[i][j - 1] === null){
@@ -483,7 +467,7 @@ for(let i = 0; i< board.length; i++){
         }
     }
 
-     /// Right Left Dia
+     /// Right clickedSquareIndexes Dia
      if(board[i][j] === 'mine' && i > 0 && j > 0){
         if(board[i - 1][j - 1] !== 'mine'){
             if(board[i - 1][j - 1] === null){
@@ -515,7 +499,7 @@ for(let i = 0; i< board.length; i++){
         }
     }
 
-    // /// Below Mine Left
+    // /// Below Mine clickedSquareIndexes
     if(board[i][j] === 'mine' && i < 4 && j > 0){
         if(board[i + 1][j - 1] !== 'mine'){
             if(board[i + 1][j - 1] === null){

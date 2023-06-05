@@ -17,6 +17,11 @@ h1 {
     margin-top: 10vmin;
 }
 
+#message {
+    font-size: 5vmin;
+    margin: 0 10vmin;
+}
+
 #boardLayout {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
