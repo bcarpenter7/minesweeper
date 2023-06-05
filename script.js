@@ -1,6 +1,6 @@
-const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='50vmin'>`
-const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='50vmin'>`
-const shovel = `<img src='https://cdn.onlinewebfonts.com/svg/img_535769.png' height='50vmin'`
+const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
+const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
+const shovel = `<img src='https://cdn.onlinewebfonts.com/svg/img_535769.png' height='60vmin'`
 const PICTURES = {
     null: '',
     mine: mine,
@@ -15,6 +15,7 @@ const PICTURES = {
     protect: flag,
     digging: shovel
 }
+
 
 
 let board;
@@ -39,7 +40,6 @@ const flagItem = document.getElementById('flagItem')
 //// Event listeners
 reset.addEventListener('click', init)
 boardLayout.addEventListener('click', handleClickChoice)
-// boardLayout.addEventListener('click', handleClickFlag)
 shovelItem.addEventListener('click', shovelClick)
 flagItem.addEventListener('click', flagClick)
 
@@ -106,10 +106,10 @@ if(e.target.id === 'mine'){
 
 if(e.target.tagName === 'DIV'){
     handleNULL(choiceId)
-    if(left.indexOf(Number(e.target.id)) < 0){
-        left.push(Number(e.target.id))
-        console.log(left.length, 'LEFT', left)
-    }
+    // if(left.indexOf(Number(e.target.id)) < 0){
+    //     left.push(Number(e.target.id))
+    //     console.log(left.length, 'LEFT', left)
+    // }
     
 }
 
@@ -146,8 +146,10 @@ function handleClickFlag(e){
                 // attaches to the parentNode (e.target's classList which stores the old value for that square (ex: 2), PICTURES uses that value to replace the lost html)
             e.target.parentNode.innerHTML = PICTURES[e.target.classList[0]]
             return
-        } else if (e.target.id === 'box'){
-            e.target.parentNode.innerHTML =  `<div id=${e.target.class} class="box" style='background-color:gray;'></div>`
+        } else if (e.target.classList[0] === 'box'){
+            console.log(e.target)
+            console.log(e.target.parentNode, 'This', e.target.id, e.target.classList[0])
+            e.target.parentNode.innerHTML =  `<div id=${e.target.id} class="box" style='background-color:gray;'></div>`
             return
         }
         // e.target.remove(e.target)
@@ -162,10 +164,11 @@ if(e.target.style.backgroundColor === 'lightgrey') return
         flagCount.push(e.target.id)
         }
     } else if(e.target.tagName === 'P'){
-        e.target.parentNode.innerHTML = `<img id='number' class='${e.target.innerText}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='50vminx'>`
+        e.target.parentNode.innerHTML = `<img id='number' class='${e.target.innerText}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
     } else if (e.target.tagName === 'DIV' && e.target.style.backgroundColor === 'gray'){
-        let temp = e.target.id
-        e.target.innerHTML = `<img id='box' class='${temp}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='50vmin'>`
+        let tempId = e.target.id
+        let tempClass = e.target.classList[0]
+        e.target.innerHTML = `<img id='${tempId}' class='${tempClass}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' >`
     }
     }
     
