@@ -27,7 +27,7 @@ h1 {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     margin-top: 5vmin;
-    gap: .3vmin;
+    gap: .2vmin;
 }
 
 .numbers {
@@ -130,4 +130,14 @@ header {
 
 .notChoice {
     border: none;
+}
+
+
+#reset {
+    color:lightgrey;
+    background-color: grey;
+    border-radius: 100px;
+    font-size: 5vmin;
+    padding: 2vmin;
+    margin-top: 5vmin;
 }
