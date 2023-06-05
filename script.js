@@ -1,6 +1,6 @@
-const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='100%'>`
-const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='100px'>`
-const shovel = `<img src='https://cdn.onlinewebfonts.com/svg/img_535769.png' height='100px'`
+const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='50vmin'>`
+const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='50vmin'>`
+const shovel = `<img src='https://cdn.onlinewebfonts.com/svg/img_535769.png' height='50vmin'`
 const PICTURES = {
     null: '',
     mine: mine,
@@ -87,6 +87,7 @@ choiceOfItem = 'flag'
 
 
 function handleClickShovel(e){
+console.log(e.target.tagName)
 if(state === 'loss' || state === 'winner') return
 if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
 if(choiceOfItem === 'flag') return
@@ -130,12 +131,9 @@ if(left.length === 20) {
 
 //////////FIX THIS FUNCTION
 function handleClickFlag(e){
+    console.log(e.target.tagName)
     if(state === 'loss' || state === 'winner') return
     if(choiceOfItem === 'shovel') return
-    console.log(e.target, 'WHTAT IS IT JDKLFJ:LSDJFKLJSDLK:FJSDKL:LFKSDJKL:')
-    
-    let choiceId = e.target;
-    console.log(choiceId, 'CHOICE ID')
     /// Handles unclick of flag
     if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'){
         if(e.target.id === 'mine'){
@@ -147,37 +145,29 @@ function handleClickFlag(e){
             e.target.parentNode.innerHTML = PICTURES[e.target.classList[0]]
             return
         } else if (e.target.id === 'box'){
-            console.log('triggered')
             e.target.parentNode.innerHTML =  `<div id=${e.target.class} class="box" style='background-color:gray;'></div>`
             return
         }
-        // choiceId.innerHTML = ''
-        console.log(choiceId.innerHTML, choiceId, 'happend')
-        e.target.remove(e.target)
+        // e.target.remove(e.target)
 }
 
 /// Handles first click
 if(e.target.style.backgroundColor === 'lightgrey') return
-    console.log(choiceId.innerText, 'ATSTART', choiceId)
-    choiceId.classList.remove('hidden');
-    choiceId.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'
-
+    e.target.classList.remove('hidden');
+    e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'
     if(e.target.tagName === 'IMG'){
-        if(flagCount.indexOf(choiceId.id) > -1){
-        flagCount.push(choiceId.id)
+        if(flagCount.indexOf(e.target.id) > -1){
+        flagCount.push(e.target.id)
         }
     } else if(e.target.tagName === 'P'){
-        e.target.parentNode.innerHTML = `<img id='number' class='${e.target.innerText}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='100px'>`
+        e.target.parentNode.innerHTML = `<img id='number' class='${e.target.innerText}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='50vminx'>`
     } else if (e.target.tagName === 'DIV' && e.target.style.backgroundColor === 'gray'){
         let temp = e.target.id
-        e.target.innerHTML = `<img id='box' class='${temp}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='100px'>`
+        e.target.innerHTML = `<img id='box' class='${temp}'src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='50vmin'>`
     }
-
-    
     }
     
     
-
 ////////FUNCTIONS
 
 
