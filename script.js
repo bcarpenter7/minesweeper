@@ -22,6 +22,7 @@ let bombLocations;
 let state;
 let choiceOfItem;
 let firstClickLocation;
+let firstMineLocation;
 
 ///Cached elements
 const reset = document.getElementById('reset')
@@ -38,10 +39,6 @@ choiceShovelDiv.addEventListener('click', handleShovelClick)
 choiceFlagDiv.addEventListener('click', handleFlagClick)
 
 
-
-
-
-    
     
 ////////FUNCTIONS
 
@@ -105,39 +102,45 @@ function handleClickChoice(e){
     }
 }
 
+
+
 function handleClickShovel(e){
+    console.log(e, 'EEEEE')
+    console.log(e.target.parentNode, e.target.id, 'ETARGEEEEEEEEE')
+    let choiceId = e.target
     if(state === 'loss' || state === 'winner') return
-    if(e.target.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
+    if(choiceId.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
     if(choiceOfItem === 'flag') return
-    if(e.target.id === 'mine' && firstClickLocation.length < 1){
+    /// If a bomb is chosen on the first turn, the board is rerendered and then the target is changed to match the target of that current location now
+    if(choiceId.id === 'mine' && firstClickLocation.length < 1){
+        firstMineLocation = choiceId.parentNode.id
         render()
-        return
+        choiceId = document.getElementById(firstMineLocation)
     }
-    firstClickLocation.push(e.target.id)
-    console.log(e.target, "this info", e.target.id, firstClickLocation)
-    e.target.classList.remove('hidden');
-    e.target.style.backgroundColor = 'lightgrey';
+
+    choiceId.classList.remove('hidden');
+    choiceId.style.backgroundColor = 'lightgrey';
     
     //// If a shovel hits a mine
-    if(e.target.id === 'mine'){
+    if(choiceId.id === 'mine'){
         state = 'loss'
         handleMessage()
     }
     /// If a shovel hits a blank space
-    if(e.target.tagName === 'DIV'){
-        handleNULL(e.target)
-        if(clickedSquareIndexes.indexOf(Number(e.target.id)) < 0){
-            clickedSquareIndexes.push(Number(e.target.id))
+    if(choiceId.tagName === 'DIV'){
+        handleNULL(choiceId)
+        if(clickedSquareIndexes.indexOf(Number(choiceId.id)) < 0){
+            clickedSquareIndexes.push(Number(choiceId.id))
             console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
         }
         
     }
     /// If a shovel hits a number space
-    if(e.target.tagName === 'P'){
-        e.target.style.backgroundColor = 'lightgrey';
+    if(choiceId.tagName === 'P'){
+        choiceId.style.backgroundColor = 'lightgrey';
         console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
-        if(clickedSquareIndexes.indexOf(e.target.parentNode.id) < 0){
-            clickedSquareIndexes.push(e.target.parentNode.id)
+        if(clickedSquareIndexes.indexOf(choiceId.parentNode.id) < 0){
+            clickedSquareIndexes.push(choiceId.parentNode.id)
             console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
         }
     }
@@ -215,9 +218,10 @@ renderItemIcon()
 
 function getBombLocations(){
 bombLocations = []
+console.log(firstMineLocation, "WHAT THE NJELKJLJO:K")
     while(bombLocations.length < 5){
         let rando = Math.floor(Math.random() * 25)
-    if(!bombLocations.includes(rando)){
+    if(!bombLocations.includes(rando) && rando !== firstMineLocation - 1){
         bombLocations.push(rando)
     }
 }
@@ -397,7 +401,7 @@ bombLocations.forEach(e => newBoard[e] = 'mine')
 
 while(newBoard.length){
     innerArr.push(newBoard.shift())
-    console.log(innerArr)
+    // console.log(innerArr)
     if(innerArr.length === 5){
         final.push(innerArr)
         innerArr = []
