@@ -113,11 +113,13 @@ function handleClickShovel(e){
     if(choiceOfItem === 'flag') return
     /// If a bomb is chosen on the first turn, the board is rerendered and then the target is changed to match the target of that current location now
     if(choiceId.id === 'mine' && firstClickLocation.length < 1){
+        console.log('TRIGGGGGGGGGGGERING TIRJKLDFJKLSDJF')
+        
         firstMineLocation = choiceId.parentNode.id
         render()
         choiceId = document.getElementById(firstMineLocation)
     }
-
+    firstClickLocation = choiceId.parentNode.id
     choiceId.classList.remove('hidden');
     choiceId.style.backgroundColor = 'lightgrey';
     
@@ -138,9 +140,9 @@ function handleClickShovel(e){
     /// If a shovel hits a number space
     if(choiceId.tagName === 'P'){
         choiceId.style.backgroundColor = 'lightgrey';
-        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
-        if(clickedSquareIndexes.indexOf(choiceId.parentNode.id) < 0){
-            clickedSquareIndexes.push(choiceId.parentNode.id)
+        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', Number(choiceId.parentNode.id), 'checkHere')
+        if(clickedSquareIndexes.indexOf(Number(choiceId.parentNode.id)) < 0){
+            clickedSquareIndexes.push(Number(choiceId.parentNode.id))
             console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
         }
     }
