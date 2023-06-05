@@ -31,8 +31,8 @@ const reset = document.getElementById('reset')
 const boardLayout = document.getElementById('boardLayout')
 const message = document.querySelector('h2')
 const boxStyle = document.querySelector('.box')
-
-
+const choiceShovelDiv = document.getElementById('choiceShovel')
+const choiceFlagDiv = document.getElementById('choiceFlag')
 const shovelItem = document.getElementById('shovelItem')
 const flagItem = document.getElementById('flagItem')
 
@@ -45,6 +45,22 @@ flagItem.addEventListener('click', flagClick)
 
 
 
+function renderItemIcon(){
+    choiceFlagDiv.classList.remove('notChoice')
+    choiceFlagDiv.classList.remove('currentChoice')
+    choiceShovelDiv.classList.remove('notChoice')
+    choiceShovelDiv.classList.remove('currentChoice')
+    if(choiceOfItem === 'shovel'){
+        choiceFlagDiv.classList.add('notChoice')
+        choiceShovelDiv.classList.add('currentChoice')
+    } else if (choiceOfItem === 'flag'){
+        choiceShovelDiv.classList.add('notChoice')
+        choiceFlagDiv.classList.add('currentChoice')
+    }
+
+}
+
+
 function handleClickChoice(e){
     console.log(choiceOfItem, 'CHOICE')
     if(choiceOfItem === 'shovel'){
@@ -53,8 +69,6 @@ function handleClickChoice(e){
         handleClickFlag(e)
     }
 }
-
-
 
 
 
@@ -80,10 +94,12 @@ function handleMessage(){
 
 function shovelClick(){
 choiceOfItem = 'shovel'
+renderItemIcon()
 }
 
 function flagClick(){
 choiceOfItem = 'flag'
+renderItemIcon()
 }
 
 

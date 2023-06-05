@@ -15,10 +15,15 @@
     <div id="container">
         <h1>Minesweeper.2</h1>
         <h2>Sweep them mines!</h2>
-        <div id="choices"><h3>Shovel</h3>`<img id="shovelItem" src='https://cdn.onlinewebfonts.com/svg/img_535769.png' height='50vmin'>
-            <h3 >Flag</h3><img id="flagItem" src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='50vmin'>
+        <div id="choice-holder">
+        <div id="choiceShovel" class="currentChoice"><h3>Shovel</h3>`<img id="shovelItem" src='https://cdn.onlinewebfonts.com/svg/img_535769.png'>
+            
         </div>
-        
+        <div id="choiceFlag" class='notChoice'>
+        <h3 >Flag</h3><img id="flagItem"  src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'>
+    </div>
+        </div>
+
         <div id="boardLayout">
             <div id='1' class="box"></div>
             <div id='2' class="box"></div>
