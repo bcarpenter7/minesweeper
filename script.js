@@ -1,4 +1,4 @@
-const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
+const mine = `<img class='' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
 // const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
 const PICTURES = {
     null: '',
@@ -58,7 +58,7 @@ state = 'playing'
 document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
 message.innerText = 'Avoid digging the hidden mines!'
 clickedSquareIndexes = [];
-copyOfClicked;
+copyOfClicked = undefined;
 choiceOfItem = 'shovel';
 firstClickLocation = [];
 render()
@@ -234,6 +234,7 @@ bombLocations = []
 
 
 function handleNULL(e) {
+    console.log(copyOfClicked)
     console.log('CURRENT IDX', e, Number(e.id))
     let newBoard = board.flat()
     // console.log(e, 'HANDLENULL', newBoard)
