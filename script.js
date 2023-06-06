@@ -1,5 +1,5 @@
-const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
-const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
+const mine = `<img class='' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
+// const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
 const PICTURES = {
     null: '',
     mine: mine,
@@ -11,7 +11,6 @@ const PICTURES = {
     6: `<p class='hidden numbers'>6</p>`,
     7: `<p class='hidden numbers'>7</p>`,
     8: `<p class='hidden numbers'>8</p>`,
-    protect: flag,
 }
 
 
@@ -72,7 +71,9 @@ function renderBoard(){
     handleBombLocations()
 
     for(let i = 0; i <= board.flat().length - 1; i++){
+       
       let boardLocations = document.querySelector(`#boardLayout :nth-child(${i + 1})`)
+      console.log(boardLocations)
         boardLocations.innerHTML = PICTURES[board.flat()[i]]
     }
 }
@@ -105,7 +106,6 @@ function handleClickChoice(e){
 
 
 function handleClickShovel(e){
-    console.log(e, 'EEEEE')
     console.log(e.target.parentNode, e.target.id, 'ETARGEEEEEEEEE')
     let choiceId = e.target
     if(state === 'loss' || state === 'winner') return
@@ -113,11 +113,11 @@ function handleClickShovel(e){
     if(choiceOfItem === 'flag') return
     /// If a bomb is chosen on the first turn, the board is rerendered and then the target is changed to match the target of that current location now
     if(choiceId.id === 'mine' && firstClickLocation.length < 1){
-        console.log('TRIGGGGGGGGGGGERING TIRJKLDFJKLSDJF')
-        
         firstMineLocation = choiceId.parentNode.id
         render()
+        console.log(firstMineLocation, 'firstMineLocation')
         choiceId = document.getElementById(firstMineLocation)
+        console.log(choiceId, 'choiceID')
     }
     firstClickLocation = choiceId.parentNode.id
     choiceId.classList.remove('hidden');
@@ -128,15 +128,23 @@ function handleClickShovel(e){
         state = 'loss'
         handleMessage()
     }
+
     /// If a shovel hits a blank space
-    if(choiceId.tagName === 'DIV'){
+    // When clicked the second time, after a bomb hit. You can have a div with a 'numberTwo' or any number class. In this case, the number value has to be added
+    // to that div's innerText, ALSO handleNULL cannot be called because it will cause random null spaces to be linked to this numbered div to 'flood'
+    console.log(choiceId.classList, 'THIS IS THE ONE BENNETT', choiceId.tagName)
+   if(choiceId.tagName === 'DIV' && choiceId.classList[1] !== undefined){
+        console.log(board.flat(), board.flat()[firstMineLocation], 'here bennet bennet')
+        choiceId.innerText = board.flat()[firstMineLocation - 1]
+    } else if(choiceId.tagName === 'DIV'){
         handleNULL(choiceId)
         if(clickedSquareIndexes.indexOf(Number(choiceId.id)) < 0){
             clickedSquareIndexes.push(Number(choiceId.id))
             console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
         }
         
-    }
+    } 
+
     /// If a shovel hits a number space
     if(choiceId.tagName === 'P'){
         choiceId.style.backgroundColor = 'lightgrey';
@@ -240,16 +248,18 @@ function handleNULL(e) {
 
 
 
-//clickedSquareIndexes fill
+//Left fill
 for(let i = 1; i < newBoard.length; i++){
-let edgeNums = [21, 16, 11, 6, 1]
-    if(newBoard[idx - i] !== null || edgeNums.indexOf(idx) > -1){
+// let edgeNums = [21, 16, 11, 6, 1]
+let edgeNums = [25, 20, 15, 10, 5]
+// console.log((idx - i) + 1, (idx - i), idx, edgeNums.indexOf(idx - i), edgeNums.indexOf(idx + 1) > -1, 'What im looking at')
+    if(newBoard[idx - i] !== null || edgeNums.indexOf(idx - i + 1) > -1 || idx - 1 < 0){
     break;
     } else {
         document.getElementById(`${idx - i + 1}`).style.backgroundColor = 'lightgrey'
         if(clickedSquareIndexes.indexOf(Number(idx - i + 1)) < 0){
         clickedSquareIndexes.push(Number(idx - i + 1))
-        console.log(clickedSquareIndexes)
+        console.log(clickedSquareIndexes, 'leftfill')
         }
     }
 
@@ -263,9 +273,10 @@ let edgeNums = [25, 20, 15, 10, 5]
     break;
     } else {
         document.getElementById(`${idx + i + 1}`).style.backgroundColor = 'lightgrey'
+        console.log(idx + i + 1, idx + 1, 'indexds')
         if(clickedSquareIndexes.indexOf(idx + i + 1) < 0){
-            clickedSquareIndexes.push(Number(idx - i + 1))
-            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
+            clickedSquareIndexes.push(Number(idx + i + 1))
+            console.log(clickedSquareIndexes, 'rightfill')
             }
     }
 
@@ -284,7 +295,7 @@ for(let i = 1; i < 5; i++){
             clickedSquareIndexes.push(Number(idx - (5 * i)))
             console.log(clickedSquareIndexes, 'clickedSquareIndexes')
             }
-        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
+        console.log(clickedSquareIndexes, 'topfill')
     }
 
 }
@@ -298,14 +309,14 @@ let edgeNums = [25, 20, 15, 10, 5]
         document.getElementById(`${idx - (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
         if(clickedSquareIndexes.indexOf(Number(idx - (5 * i) + 1)) < 0){
             clickedSquareIndexes.push(Number(idx - (5 * i) + 1))
-            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
+            console.log(clickedSquareIndexes, 'top right dia')
             }
         console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 
 }
 
-//Top clickedSquareIndexes fill
+//Top left fill
 for(let i = 1; i < 5; i++){
     
 let edgeNums = [21, 16, 11, 6, 1]
@@ -316,9 +327,8 @@ console.log(idx, edgeNums.indexOf(idx) > 0)
         document.getElementById(`${idx - (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
         if(clickedSquareIndexes.indexOf(Number(idx - (5 * i) - 1)) < 0){
             clickedSquareIndexes.push(Number(idx - (5 * i) - 1))
-            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
+            console.log(clickedSquareIndexes, 'top left dia')
             }
-        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 
 }
@@ -326,52 +336,51 @@ console.log(idx, edgeNums.indexOf(idx) > 0)
 
 //Bottom fill
 for(let i = 1; i < 5; i++){
-    console.log('TRYING', i)
     if(newBoard[idx + (5 * i) - 1] !== null){
     break;
     } else if (newBoard[idx + (5 * i) - 1] === null){
         document.getElementById(`${idx + (5 * i)}`).style.backgroundColor = 'lightgrey'
         if(clickedSquareIndexes.indexOf(Number(idx + (5 * i))) < 0){
             clickedSquareIndexes.push(Number(idx + (5 * i)))
-            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
+            console.log(clickedSquareIndexes, 'bottom fill')
             }
-        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
+
     }
 }
 
-//Bottom clickedSquareIndexes Dia fill
+//Bottom Left Dia fill
 for(let i = 1; i < 5; i++){
     let edgeNums = [21, 16, 11, 6, 1]
-    console.log('TRYING', i)
     if(newBoard[idx + (5 * i) - 2] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[idx + (5 * i) - 2] === null){
         document.getElementById(`${idx + (5 * i) - 1}`).style.backgroundColor = 'lightgrey'
         if(clickedSquareIndexes.indexOf(Number(idx + (5 * i) - 1)) < 0){
             clickedSquareIndexes.push(Number(idx + (5 * i) - 1))
-            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
+            console.log(clickedSquareIndexes, 'bottom left dia fill')
             }
-        console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 }
 
 //Bottom Right Dia fill
 for(let i = 1; i < 5; i++){
     let edgeNums = [25, 20, 15, 10, 5]
-    console.log('TRYING', i)
     if(newBoard[idx + (5 * i)] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[idx + (5 * i)] === null){
         document.getElementById(`${idx + (5 * i) + 1}`).style.backgroundColor = 'lightgrey'
         if(clickedSquareIndexes.indexOf(Number(idx + (5 * i) + 1)) < 0){
             clickedSquareIndexes.push(Number(idx + (5 * i) + 1))
-            console.log(clickedSquareIndexes, 'clickedSquareIndexes')
+            console.log(clickedSquareIndexes, 'bottom right dia')
             }
         console.log(clickedSquareIndexes.length, 'clickedSquareIndexes')
     }
 }
 
-
+if(clickedSquareIndexes.length >= 20) {
+    state = 'winner'
+    handleWin()
+}
 
 }
 
@@ -512,18 +521,20 @@ for(let i = 0; i< board.length; i++){
   
 }
 }
-
-let temp = board.flat()
-console.log(temp,'tmep')
-renderNumberColor(temp)
+console.log('flattendBoard', board.flat().length, board.flat())
+renderNumberColor(board.flat())
 }
 
 
-function renderNumberColor(temp){
+function renderNumberColor(flattenedBoard){
 
     /// Clears old classlist
-    for(let i = 0; i< temp.length; i++){
-        if(temp[i]){
+    for(let i = 0; i< flattenedBoard.length; i++){
+        console.log(document.getElementById(i + 1), flattenedBoard[i])
+        if(flattenedBoard[i] || flattenedBoard[i]=== null){
+            console.log(i, 'does it', document.getElementById(i + 1).classList, document.getElementById(i + 1))
+            
+         
             document.getElementById(i + 1).classList.remove('numberOne')
             document.getElementById(i + 1).classList.remove('numberTwo')
             document.getElementById(i + 1).classList.remove('numberThree')
@@ -532,37 +543,43 @@ function renderNumberColor(temp){
             document.getElementById(i + 1).classList.remove('numberSix')
             document.getElementById(i + 1).classList.remove('numberSeven')
             document.getElementById(i + 1).classList.remove('numberEight')
+            console.log(document.getElementById(i + 1).classList, 'afterwards')
+            
             }
-        }
+    }
     
     /// Adds color based on numbers
-    for(let i = 0; i< temp.length; i++){
-        // console.log(temp)
-        if(temp[i] === 1){
+    for(let i = 0; i < flattenedBoard.length; i++){
+        console.log(flattenedBoard, 'what is it')
+        console.log(flattenedBoard[i])
+        console.log(document.getElementById(i + 1))
+        if(flattenedBoard[i] === 1){
             document.getElementById(i + 1).classList.add('numberOne')
         }
-        if(temp[i] === 2){
+        if(flattenedBoard[i] === 2){
             document.getElementById(i + 1).classList.add('numberTwo')
         }
-        if(temp[i] === 3){
+        if(flattenedBoard[i] === 3){
             document.getElementById(i + 1).classList.add('numberThree')
         }
-        if(temp[i] === 4){
+        if(flattenedBoard[i] === 4){
             document.getElementById(i + 1).classList.add('numberFour')
         }
-        if(temp[i] === 5){
+        if(flattenedBoard[i] === 5){
             document.getElementById(i + 1).classList.add('numberFive')
         }
-        if(temp[i] === 6){
+        if(flattenedBoard[i] === 6){
             document.getElementById(i + 1).classList.add('numberSix')
         }
-        if(temp[i] === 7){
+        if(flattenedBoard[i] === 7){
             document.getElementById(i + 1).classList.add('numberSeven')
         }
-        if(temp[i] === 8){
+        if(flattenedBoard[i] === 8){
             document.getElementById(i + 1).classList.add('numberEight')
         }
 
     }
+
+    
 
 }
