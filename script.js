@@ -1,4 +1,4 @@
-const mine = `<img class='' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
+const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
 // const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
 const PICTURES = {
     null: '',
@@ -22,6 +22,7 @@ let state;
 let choiceOfItem;
 let firstClickLocation;
 let firstMineLocation;
+let copyOfClicked;
 
 ///Cached elements
 const reset = document.getElementById('reset')
@@ -56,7 +57,8 @@ board = [
 state = 'playing'
 document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
 message.innerText = 'Avoid digging the hidden mines!'
-clickedSquareIndexes = []
+clickedSquareIndexes = [];
+copyOfClicked;
 choiceOfItem = 'shovel';
 firstClickLocation = [];
 render()
@@ -73,7 +75,6 @@ function renderBoard(){
     for(let i = 0; i <= board.flat().length - 1; i++){
        
       let boardLocations = document.querySelector(`#boardLayout :nth-child(${i + 1})`)
-      console.log(boardLocations)
         boardLocations.innerHTML = PICTURES[board.flat()[i]]
     }
 }
@@ -106,7 +107,6 @@ function handleClickChoice(e){
 
 
 function handleClickShovel(e){
-    console.log(e.target.parentNode, e.target.id, 'ETARGEEEEEEEEE')
     let choiceId = e.target
     if(state === 'loss' || state === 'winner') return
     if(choiceId.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
@@ -132,15 +132,12 @@ function handleClickShovel(e){
     /// If a shovel hits a blank space
     // When clicked the second time, after a bomb hit. You can have a div with a 'numberTwo' or any number class. In this case, the number value has to be added
     // to that div's innerText, ALSO handleNULL cannot be called because it will cause random null spaces to be linked to this numbered div to 'flood'
-    console.log(choiceId.classList, 'THIS IS THE ONE BENNETT', choiceId.tagName)
    if(choiceId.tagName === 'DIV' && choiceId.classList[1] !== undefined){
-        console.log(board.flat(), board.flat()[firstMineLocation], 'here bennet bennet')
         choiceId.innerText = board.flat()[firstMineLocation - 1]
     } else if(choiceId.tagName === 'DIV'){
         handleNULL(choiceId)
         if(clickedSquareIndexes.indexOf(Number(choiceId.id)) < 0){
             clickedSquareIndexes.push(Number(choiceId.id))
-            console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
         }
         
     } 
@@ -151,7 +148,6 @@ function handleClickShovel(e){
         console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', Number(choiceId.parentNode.id), 'checkHere')
         if(clickedSquareIndexes.indexOf(Number(choiceId.parentNode.id)) < 0){
             clickedSquareIndexes.push(Number(choiceId.parentNode.id))
-            console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', clickedSquareIndexes)
         }
     }
     /// If the clicked space results in the 20 nonmine spaces being clicked
@@ -228,30 +224,30 @@ renderItemIcon()
 
 function getBombLocations(){
 bombLocations = []
-console.log(firstMineLocation, "WHAT THE NJELKJLJO:K")
     while(bombLocations.length < 5){
         let rando = Math.floor(Math.random() * 25)
     if(!bombLocations.includes(rando) && rando !== firstMineLocation - 1){
         bombLocations.push(rando)
     }
 }
-console.log(bombLocations, 'BOMBLOCATIONS')
 }
 
 
 function handleNULL(e) {
-
+    console.log('CURRENT IDX', e, Number(e.id))
     let newBoard = board.flat()
-    console.log(e, 'HANDLENULL', newBoard)
-    let idx = Number(e.id);
-    console.log(e, idx, newBoard[idx], 'WHERE DID I CLICK')
+    // console.log(e, 'HANDLENULL', newBoard)
+    let idx = Number(e.id) ? Number(e.id) : e
+    console.log(idx, e, 'what is dis')
+    // console.log(e, idx, newBoard[idx], 'WHERE DID I CLICK')
 
 
 
 //Left fill
 for(let i = 1; i < newBoard.length; i++){
 // let edgeNums = [21, 16, 11, 6, 1]
-let edgeNums = [25, 20, 15, 10, 5]
+// let edgeNums = [25, 20, 15, 10]
+let edgeNums = [-1]
 // console.log((idx - i) + 1, (idx - i), idx, edgeNums.indexOf(idx - i), edgeNums.indexOf(idx + 1) > -1, 'What im looking at')
     if(newBoard[idx - i] !== null || edgeNums.indexOf(idx - i + 1) > -1 || idx - 1 < 0){
     break;
@@ -381,6 +377,31 @@ if(clickedSquareIndexes.length >= 20) {
     state = 'winner'
     handleWin()
 }
+
+console.log(copyOfClicked, 'COPDSYDF')
+
+if(copyOfClicked === undefined){
+copyOfClicked = clickedSquareIndexes.slice(0)
+handleNULL(copyOfClicked[0])
+} else if(copyOfClicked === []){
+    return
+} else {
+    console.log(copyOfClicked, 'COPY OF CLICKED')
+    copyOfClicked.shift()
+}
+
+if(copyOfClicked.length){
+    console.log('works')
+    handleNULL(copyOfClicked[0])
+    
+} else {
+    console.log('end IT', 'length')
+    return
+}
+
+
+// handleNULL(copyOfClicked[0])
+
 
 }
 
@@ -530,11 +551,7 @@ function renderNumberColor(flattenedBoard){
 
     /// Clears old classlist
     for(let i = 0; i< flattenedBoard.length; i++){
-        console.log(document.getElementById(i + 1), flattenedBoard[i])
         if(flattenedBoard[i] || flattenedBoard[i]=== null){
-            console.log(i, 'does it', document.getElementById(i + 1).classList, document.getElementById(i + 1))
-            
-         
             document.getElementById(i + 1).classList.remove('numberOne')
             document.getElementById(i + 1).classList.remove('numberTwo')
             document.getElementById(i + 1).classList.remove('numberThree')
@@ -543,16 +560,12 @@ function renderNumberColor(flattenedBoard){
             document.getElementById(i + 1).classList.remove('numberSix')
             document.getElementById(i + 1).classList.remove('numberSeven')
             document.getElementById(i + 1).classList.remove('numberEight')
-            console.log(document.getElementById(i + 1).classList, 'afterwards')
             
             }
     }
     
     /// Adds color based on numbers
     for(let i = 0; i < flattenedBoard.length; i++){
-        console.log(flattenedBoard, 'what is it')
-        console.log(flattenedBoard[i])
-        console.log(document.getElementById(i + 1))
         if(flattenedBoard[i] === 1){
             document.getElementById(i + 1).classList.add('numberOne')
         }
