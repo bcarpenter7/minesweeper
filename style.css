@@ -115,8 +115,7 @@ header {
 
 #shovelItem {
     height: 15vmin;
-    background-color: rgb(206, 170, 61);
-    padding: 1vmin;
+    padding: 2.5vmin;
 }
 
 #choice-holder {
@@ -134,17 +133,17 @@ header {
 #choiceFlag {
     text-align: center;
     border-radius: 4px;
-    padding: 1vmin;
+    padding: 4vmin;
+    align-items: center;
 }
 
 .currentChoice {
-    /* border: 7px solid rgb(199, 174, 133); */
-    border: 2vmin solid rgb(206, 170, 61);
     background-color:rgb(206, 170, 61); 
 }
 
-.notChoice {
+.notChoice{
     border: none;
+    background-color: gray;
 }
 
 
@@ -154,5 +153,5 @@ header {
     border-radius: 100px;
     font-size: 5vmin;
     padding: 2vmin;
-    /* margin-top: 2vmin; */
+
 }
