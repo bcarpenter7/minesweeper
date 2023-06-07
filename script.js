@@ -1,4 +1,4 @@
-const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
+const mine = `<img class='' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
 // const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
 const PICTURES = {
     null: '',
@@ -14,6 +14,7 @@ const PICTURES = {
 }
 
 
+const lightGrey = 'rgb(0, 122, 122)';
 
 let board;
 let clickedSquareIndexes;
@@ -66,6 +67,8 @@ render()
 
 function render(){
     renderBoard()
+    //Resets border around shovel/flag if left on flag
+    renderItemIcon()
 }
 
 
@@ -121,7 +124,7 @@ function handleClickShovel(e){
     }
     firstClickLocation = choiceId.parentNode.id
     choiceId.classList.remove('hidden');
-    choiceId.style.backgroundColor = 'lightgrey';
+    choiceId.style.backgroundColor = lightGrey;
     
     //// If a shovel hits a mine
     if(choiceId.id === 'mine'){
@@ -146,7 +149,7 @@ function handleClickShovel(e){
 
     /// If a shovel hits a number space
     if(choiceId.tagName === 'P'){
-        choiceId.style.backgroundColor = 'lightgrey';
+        choiceId.style.backgroundColor = lightGrey;
         console.log(clickedSquareIndexes.length, 'clickedSquareIndexes', Number(choiceId.parentNode.id), 'checkHere')
         if(clickedSquareIndexes.indexOf(Number(choiceId.parentNode.id)) < 0){
             clickedSquareIndexes.push(Number(choiceId.parentNode.id))
@@ -181,7 +184,7 @@ function handleClickFlag(e){
 }
 
 /// Handles first click
-if(e.target.style.backgroundColor === 'lightgrey') return //// if it has already been clicked before
+if(e.target.style.backgroundColor === lightGrey) return //// if it has already been clicked before
         /// if first click on img
     e.target.classList.remove('hidden');
     e.target.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png'
@@ -259,7 +262,7 @@ let indexForDOM = idx - i + 1
 let currentElem = document.getElementById(`${indexForDOM}`)
 
     if(typeof(newBoard[indexForNewBoard]) === 'number' && edgeNums.indexOf(indexForDOM) < 0){
-    currentElem.style.backgroundColor = 'lightgrey'
+    currentElem.style.backgroundColor = lightGrey
     currentElem.classList.remove('hidden');
     currentElem.innerText = newBoard[indexForNewBoard]
     if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
@@ -269,7 +272,7 @@ let currentElem = document.getElementById(`${indexForDOM}`)
     } else if(newBoard[indexForNewBoard] !== null || edgeNums.indexOf(indexForDOM) > -1 || idx - 1 < 0){
     break;
     } else {
-        document.getElementById(`${indexForDOM}`).style.backgroundColor = 'lightgrey'
+        document.getElementById(`${indexForDOM}`).style.backgroundColor = lightGrey
         if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
         clickedSquareIndexes.push(Number(indexForDOM))
         console.log(clickedSquareIndexes, 'leftfill')
@@ -289,7 +292,7 @@ let indexForDOM = idx + i + 1
 let currentElem = document.getElementById(`${indexForDOM}`)
 console.log(edgeNums.indexOf(idx + i) < 0, 'is it true', idx + i)
     if(typeof(newBoard[indexForNewBoard]) === 'number' && edgeNums.indexOf(indexForNewBoard) < 0){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         currentElem.classList.remove('hidden');
         currentElem.innerText = board.flat()[indexForNewBoard]
         if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
@@ -300,7 +303,7 @@ console.log(edgeNums.indexOf(idx + i) < 0, 'is it true', idx + i)
     } else if(newBoard[indexForNewBoard] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else {
-        document.getElementById(`${indexForDOM}`).style.backgroundColor = 'lightgrey'
+        document.getElementById(`${indexForDOM}`).style.backgroundColor = lightGrey
         console.log(indexForDOM, idx + 1, 'indexds')
         if(clickedSquareIndexes.indexOf(indexForDOM) < 0){
             clickedSquareIndexes.push(Number(indexForDOM))
@@ -321,7 +324,7 @@ for(let i = 1; i < 5; i++){
  let currentElem = document.getElementById(`${indexForDOM}`)
     
     if(typeof(newBoard[indexForNewBoard]) === 'number'){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         currentElem.classList.remove('hidden');
         currentElem.innerText = newBoard[indexForNewBoard]
         console.log(currentElem, "TOP TOP TOP ")
@@ -333,7 +336,7 @@ for(let i = 1; i < 5; i++){
     } else if(newBoard[indexForNewBoard] !== null){
     break;
     } else if (newBoard[indexForNewBoard] === null){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
             clickedSquareIndexes.push(Number(indexForDOM))
             console.log(clickedSquareIndexes, 'clickedSquareIndexes')
@@ -352,7 +355,7 @@ let indexForNewBoard = idx - (5 * i)
 let indexForDOM = idx - (5 * i) + 1
 let currentElem = document.getElementById(`${indexForDOM}`)
     if(typeof(newBoard[indexForNewBoard]) === 'number' && floodNums.indexOf(indexForDOM) < 0){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         currentElem.classList.remove('hidden');
         currentElem.innerText = board.flat()[idx - (5 * i)]
         console.log(currentElem, "TOP RIGHT FILL ")
@@ -364,7 +367,7 @@ let currentElem = document.getElementById(`${indexForDOM}`)
     } else if(newBoard[idx - (5 * i)] !== null  || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[idx - (5 * i)] === null){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
             clickedSquareIndexes.push(Number(indexForDOM))
             console.log(clickedSquareIndexes, 'top right dia')
@@ -387,7 +390,7 @@ let indexForDOM = idx - (5 * i) - 1
 let currentElem = document.getElementById(`${indexForDOM}`)
 
 if(typeof(newBoard[indexForNewBoard]) === 'number' && floodNums.indexOf(indexForDOM) < 0){
-    currentElem.style.backgroundColor = 'lightgrey'
+    currentElem.style.backgroundColor = lightGrey
     currentElem.classList.remove('hidden');
     currentElem.innerText = board.flat()[indexForNewBoard]
     console.log(currentElem, "TOP LEFT FILL ")
@@ -399,7 +402,7 @@ if(typeof(newBoard[indexForNewBoard]) === 'number' && floodNums.indexOf(indexFor
 } else if(newBoard[indexForNewBoard] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[indexForNewBoard] === null){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
             clickedSquareIndexes.push(Number(indexForDOM))
             console.log(clickedSquareIndexes, 'top left dia')
@@ -419,7 +422,7 @@ let indexForDOM = idx + (5 * i)
 let currentElem = document.getElementById(`${indexForDOM}`)
 
 if(typeof(newBoard[indexForNewBoard]) === 'number'){
-    currentElem.style.backgroundColor = 'lightgrey'
+    currentElem.style.backgroundColor = lightGrey
     currentElem.classList.remove('hidden');
     currentElem.innerText = newBoard[indexForNewBoard]
     console.log(currentElem, "Bottom FILL ")
@@ -431,7 +434,7 @@ if(typeof(newBoard[indexForNewBoard]) === 'number'){
 } else if(newBoard[indexForNewBoard] !== null){
     break;
     } else if (newBoard[indexForNewBoard] === null){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
             clickedSquareIndexes.push(Number(indexForDOM))
             console.log(clickedSquareIndexes, 'bottom fill')
@@ -458,7 +461,7 @@ for(let i = 1; i < 5; i++){
 
 
     if(typeof(newBoard[indexForNewBoard]) === 'number' && floodNums.indexOf(indexForDOM) < 0){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         currentElem.classList.remove('hidden');
         currentElem.innerText = newBoard[indexForNewBoard]
         console.log(currentElem, "Bottom DIA FILL ")
@@ -470,7 +473,7 @@ for(let i = 1; i < 5; i++){
     } else if(newBoard[indexForNewBoard] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[indexForNewBoard] === null){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
             clickedSquareIndexes.push(Number(indexForDOM))
             console.log(clickedSquareIndexes, 'bottom left dia fill')
@@ -489,7 +492,7 @@ for(let i = 1; i < 5; i++){
 
 
     if(typeof(newBoard[indexForNewBoard]) === 'number' && floodNums.indexOf(indexForDOM) < 0){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         currentElem.classList.remove('hidden');
         currentElem.innerText = newBoard[indexForNewBoard]
         console.log(currentElem, "Bottom Right Dia FILL ")
@@ -501,7 +504,7 @@ for(let i = 1; i < 5; i++){
     } else if(newBoard[indexForNewBoard] !== null || edgeNums.indexOf(idx) > -1){
     break;
     } else if (newBoard[indexForNewBoard] === null){
-        currentElem.style.backgroundColor = 'lightgrey'
+        currentElem.style.backgroundColor = lightGrey
         if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
             clickedSquareIndexes.push(Number(indexForDOM))
             console.log(clickedSquareIndexes, 'bottom right dia')
