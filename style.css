@@ -20,14 +20,14 @@ body {
 }
 
 h1 {
-    font-size: 12vmin;
+    font-size: 12.5vmin;
     margin-top: 10vmin;
     letter-spacing: 1px;
     color: rgb(156, 116, 199);
 }
 
 #message {
-    font-size: 5vmin;
+    font-size: 5.5vmin;
     margin: 0 10vmin;
     color: rgb(156, 116, 199);
 }
