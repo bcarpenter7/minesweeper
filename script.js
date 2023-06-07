@@ -1,4 +1,4 @@
-const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
+const mine = `<img class='' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
 // const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
 const PICTURES = {
     null: '',
@@ -118,9 +118,7 @@ function handleClickShovel(e){
     if(choiceId.id === 'mine' && firstClickLocation.length < 1){
         firstMineLocation = choiceId.parentNode.id
         render()
-        console.log(firstMineLocation, 'firstMineLocation')
         choiceId = document.getElementById(firstMineLocation)
-        console.log(choiceId, 'choiceID')
     }
     firstClickLocation = choiceId.parentNode.id
     choiceId.classList.remove('hidden');
@@ -129,7 +127,9 @@ function handleClickShovel(e){
     //// If a shovel hits a mine
     if(choiceId.id === 'mine'){
         state = 'loss'
-        handleMessage()
+        choiceId.style.backgroundColor = 'gray';
+        console.log(choiceId)
+        handleMessage(choiceId)
     }
 
     /// If a shovel hits a blank space
@@ -197,10 +197,14 @@ if(e.target.style.backgroundColor === lightGrey) return //// if it has already b
     }
 
 
-function handleLoss(){
+function handleLoss(id){
 message.innerText = 'You Lose!'
 /// Reveals bombs after loss
 document.querySelectorAll('.hidden').forEach(e => e.classList.remove('hidden'))
+id.classList.add('bombAction')
+// document.querySelectorAll('#mine').forEach(e => e.classList.add('bombAction'))
+setTimeout(() => document.querySelectorAll('#mine').forEach(e => e.src = 'https://www.freepnglogos.com/uploads/explosion/clipart-starburst-explosion-comic-vector-png-transparent-5.png'), 1000)
+console.log(document.querySelectorAll('#mine').classList)
 }
 
 
@@ -210,10 +214,10 @@ message.innerText = 'You win!'
 
 
 
-function handleMessage(){
+function handleMessage(id){
     if(state === 'playing') return
     if(state === 'winner') handleWin()
-    if(state === 'loss') handleLoss()
+    if(state === 'loss') handleLoss(id)
 }
 
 /// Changes item to shovel and renders box around it
