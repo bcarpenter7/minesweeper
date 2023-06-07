@@ -60,35 +60,35 @@ header {
 }
 
 .numberOne {
-    color: blue;
+    color: rgb(47, 47, 248);
 }
 
 .numberTwo {
-    color: green;
+    color: rgb(30, 122, 30);
 }
 
 .numberThree {
-    color: red;
+    color: rgb(231, 16, 16);
 }
 
 .numberFour {
-    color: black;
+    color: rgb(37, 37, 37);
 }
 
 .numberFive {
-    color: darkred;
+    color: rgb(128, 16, 128);
 }
 
 .numberSix {
-    color: yellow;
+    color: #f59f00;
 }
 
 .numberSeven {
-    color: purple;
+    color: #4263eb;
 }
 
 .numberEight {
-    color: pink;
+    color: #f76707;
 }
 
 #choices {
@@ -125,7 +125,7 @@ header {
 }
 
 .currentChoice {
-    border: 7px solid green;
+    border: 7px solid rgb(30, 122, 30);
 }
 
 .notChoice {

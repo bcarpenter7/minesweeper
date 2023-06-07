@@ -553,7 +553,7 @@ let curLastEl = copyOfClicked[copyOfClicked.length - 1]
 if(copyOfClicked.length > 0){
     
     let addition = clickedSquareIndexes.slice(clickedSquareIndexes.indexOf(curLastEl))
-    console.log(curLastEl, addition, copyOfClicked, clickedSquareIndexes, 'dis is the new one that we are all looking for')
+    console.log(curLastEl, addition, copyOfClicked, clickedSquareIndexes, 'dis is the new one that we are all looking')
     copyOfClicked = [...copyOfClicked, ...addition]
 }
 
