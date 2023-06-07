@@ -115,7 +115,7 @@ header {
 
 #shovelItem {
     height: 15vmin;
-    background-color: white;
+    background-color: rgb(206, 170, 61);
     padding: 1vmin;
 }
 
@@ -140,6 +140,7 @@ header {
 .currentChoice {
     /* border: 7px solid rgb(199, 174, 133); */
     border: 2vmin solid rgb(206, 170, 61);
+    background-color:rgb(206, 170, 61); 
 }
 
 .notChoice {
