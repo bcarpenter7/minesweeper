@@ -204,6 +204,7 @@ document.querySelectorAll('.hidden').forEach(e => e.classList.remove('hidden'))
 id.classList.add('bombAction')
 // document.querySelectorAll('#mine').forEach(e => e.classList.add('bombAction'))
 setTimeout(() => document.querySelectorAll('#mine').forEach(e => e.src = 'https://www.freepnglogos.com/uploads/explosion/clipart-starburst-explosion-comic-vector-png-transparent-5.png'), 1000)
+// setTimeout(() => document.querySelectorAll('#mine').forEach(e => e.src = 'https://w7.pngwing.com/pngs/102/643/png-transparent-desktop-comic-explosion-miscellaneous-photography-computer.png'), 1000);
 console.log(document.querySelectorAll('#mine').classList)
 }
 
