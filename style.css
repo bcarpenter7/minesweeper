@@ -27,7 +27,7 @@ h1 {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     /* margin-top: 1vmin; */
-    gap: .2vmin;
+    gap: .25vmin;
 }
 
 .numbers {
@@ -109,7 +109,7 @@ header {
 #choice-holder {
     display: flex;
     flex-direction: row;
-    gap: 2vmin;
+    gap: 3vmin;
 }
 
 #choiceShovel {
