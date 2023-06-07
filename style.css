@@ -44,8 +44,9 @@ h1 {
 
 
 #message {
-    font-size: 5.5vmin;
+    font-size: 4.5vmin;
     margin: 0 10vmin;
+    margin-top: -1vmin;
     color: rgb(156, 116, 199);
 }
 
