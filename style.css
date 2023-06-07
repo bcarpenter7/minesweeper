@@ -5,8 +5,8 @@
     font-weight: bolder;
 }
 
+
 body {
-    /* background-color: rgb(8, 19, 52); */
     background-color: rgb(2, 12, 23);
 }
 
@@ -26,17 +26,46 @@ h1 {
     color: rgb(156, 116, 199);
 }
 
+@media only screen and (min-width: 481px){
+    h1 {
+        font-size: 8vmin;
+        margin-top: 6vmin;
+        margin-bottom: -3vmin;
+    }
+}
+
+@media only screen and (min-width: 768px){
+    h1 {
+        font-size: 8vmin;
+        margin-top: 3vmin;
+        margin-bottom: -3vmin;
+    }
+}
+
+
 #message {
     font-size: 5.5vmin;
     margin: 0 10vmin;
     color: rgb(156, 116, 199);
 }
 
+@media only screen and (min-width: 481px){
+   #message {
+        font-size: 7vmin;
+    }
+}
+
+@media only screen and (min-width: 768px){
+    #message {
+        font-size: 3vmin;
+        margin-top: -2vmin;
+    }
+}
+
 #boardLayout {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    /* margin-top: 1vmin; */
     gap: .25vmin;
 }
 
@@ -45,25 +74,40 @@ h1 {
     width: 17vmin;
 }
 
+@media only screen and (min-width: 481px){
+    .numbers {
+        height: 11vmin;
+        width: 11vmin;
+    }
+}
+
+
 .box {
     background-color: gray;
     height: 17vmin;
     width: 17vmin;
-    /* border: 1px solid blue; */
     font-size: 15vmin;
     text-align: center;
     color: black;
 }
 
-@media only screen and(min-width: 800px){
-.box:hover {
-    transform: scale(1.05);
-}
+
+@media only screen and (min-width: 481px) {
+    .box {
+        height: 11vmin;
+        width: 11vmin;
+        font-size: 10vmin;
+        /* text-align: center; */
+    }
 }
 
-header {
-    font-size: 4vmin;
+
+@media only screen and (min-width: 768px){
+    .box:hover {
+    transform: scale(1.02);
+    }
 }
+
 
 .hidden {
     opacity: 0;
@@ -112,9 +156,36 @@ header {
     height: 15vmin;
 }
 
+@media only screen and (min-width: 481px) {
+    #flagItem {
+       height: 10vmin;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #flagItem {
+       height: 8vmin;
+    }
+}
+
 #shovelItem {
     height: 15vmin;
     padding: 2.85vmin;
+}
+
+@media only screen and (min-width: 481px) {
+    #shovelItem {
+      height: 10vmin;
+      padding: 1vmin;  
+
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #shovelItem {
+      height: 8vmin;
+      /* padding: 1vmin;   */
+    }
 }
 
 #choice-holder {
@@ -123,10 +194,35 @@ header {
     gap: 3vmin;
 }
 
+@media only screen and (min-width: 481px) {
+    #choice-holder {
+        height: 15vmin;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #choice-holder {
+        height: 12vmin;
+        margin-top: -3vmin;
+    }
+}
+
 #choiceShovel {
     text-align: center;
     border-radius: 4px;
     padding: 1vmin;
+}
+
+@media only screen and (min-width: 481px) {
+    #choiceShovel {
+        padding: 1.5vmin;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #choiceShovel {
+        padding: 1vmin;
+    }
 }
 
 #choiceFlag {
@@ -134,6 +230,12 @@ header {
     border-radius: 4px;
     padding: 4vmin;
     align-items: center;
+}
+
+@media only screen and (min-width: 481px) {
+    #choiceFlag {
+     padding: 2vmin;
+    }
 }
 
 .currentChoice {
@@ -152,5 +254,28 @@ header {
     border-radius: 100px;
     font-size: 6vmin;
     padding: 2vmin;
+}
 
+@media only screen and (min-width: 481px) {
+    #reset {
+        font-size: 3vmin;
+        padding: 2vmin;
+        margin-top: -2vmin;
+    }
+    #mine {
+        height: 11vmin;
+    } 
+
+    #number {
+        height: 11vmin;
+    }
+}
+
+/* Maybe unnecessary */
+@media only screen and (min-width: 768px) {
+    #reset {
+        font-size: 3vmin;
+        padding: 1vmin;
+        margin-top: -3vmin;
+    }
 }
