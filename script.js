@@ -337,7 +337,7 @@ let currentElem = document.getElementById(`${indexForDOM}`)
     if(typeof(newBoard[indexForNewBoard]) === 'number' && floodNums.indexOf(indexForDOM) < 0){
         currentElem.style.backgroundColor = lightGrey
         currentElem.classList.remove('hidden');
-        currentElem.innerText = board.flat()[idx - (5 * i)]
+        currentElem.innerText = newBoard[indexForNewBoard]
         if(clickedSquareIndexes.indexOf(Number(indexForDOM)) < 0){
             clickedSquareIndexes.push(Number(indexForDOM))
         }
