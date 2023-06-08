@@ -354,9 +354,6 @@ let currentElem = document.getElementById(`${indexForDOM}`)
 }
 
 
-
-
-
 //Top left fill
 for(let i = 1; i < 5; i++){
 let edgeNums = [21, 16, 11, 6, 1]
@@ -383,10 +380,6 @@ if(typeof(newBoard[indexForNewBoard]) === 'number' && floodNums.indexOf(indexFor
     }
 
 }
-
-
-
-
 
 //Bottom fill
 for(let i = 1; i < 5; i++){
