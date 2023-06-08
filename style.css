@@ -92,6 +92,10 @@ h1 {
     color: black;
 }
 
+.box:hover {
+    cursor: pointer;
+}
+
 
 @media only screen and (min-width: 481px) {
     .box {
@@ -214,6 +218,10 @@ h1 {
     padding: 1vmin;
 }
 
+#choiceShovel:hover {
+    cursor: pointer;
+}
+
 @media only screen and (min-width: 481px) {
     #choiceShovel {
         padding: 1.5vmin;
@@ -233,6 +241,10 @@ h1 {
     align-items: center;
 }
 
+#choiceFlag:hover {
+    cursor: pointer;
+}
+
 @media only screen and (min-width: 481px) {
     #choiceFlag {
      padding: 2vmin;
@@ -248,13 +260,16 @@ h1 {
     background-color: gray;
 }
 
-
 #reset {
     color:rgb(0, 70,80);
     background-color: rgb(0, 122, 122);
     border-radius: 100px;
     font-size: 6vmin;
     padding: 2vmin;
+}
+
+#reset:hover {
+    cursor:pointer;
 }
 
 
