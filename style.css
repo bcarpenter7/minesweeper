@@ -155,7 +155,6 @@ h1 {
     align-items: center;
 }
 
-
 #flagItem {
     z-index: 100;
     height: 15vmin;
@@ -348,10 +347,8 @@ h1 {
         transform: rotate(2deg);
     } 
     to {
-        transform: rotate(-2deg);
-
+        transform: rotate(0deg);
     }
-    
 }
 
 #links {
