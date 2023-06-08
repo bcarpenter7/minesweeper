@@ -1,5 +1,7 @@
+
+
+/// Constant elements
 const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
-// const flag = `<img id='number' src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png' height='70vmin'>`
 const PICTURES = {
     null: '',
     mine: mine,
@@ -12,10 +14,9 @@ const PICTURES = {
     7: `<p class='hidden numbers'>7</p>`,
     8: `<p class='hidden numbers'>8</p>`,
 }
-
-
 const lightGrey = 'rgb(0, 122, 122)';
 
+/// Initialized elements
 let board;
 let clickedSquareIndexes;
 let bombLocations;
@@ -42,7 +43,6 @@ choiceFlagDiv.addEventListener('click', handleFlagClick)
 
     
 ////////FUNCTIONS
-
 
 init()
 
@@ -413,13 +413,6 @@ if(typeof(newBoard[indexForNewBoard]) === 'number'){
     }
 }
 
-
-
-
-
-
-
-
 //Bottom Left Dia fill
 for(let i = 1; i < 5; i++){
     let indexForNewBoard = idx + (5 * i) - 2
@@ -427,8 +420,6 @@ for(let i = 1; i < 5; i++){
     let currentElem = document.getElementById(`${indexForDOM}`)
     let edgeNums = [21, 16, 11, 6, 1]
     let floodNums = [25, 20, 15, 10, 5]
-
-
 
     if(typeof(newBoard[indexForNewBoard]) === 'number' && floodNums.indexOf(indexForDOM) < 0){
         currentElem.style.backgroundColor = lightGrey
@@ -447,7 +438,6 @@ for(let i = 1; i < 5; i++){
             }
     }
 }
-
 
 //Bottom Right Dia fill
 for(let i = 1; i < 5; i++){
@@ -476,18 +466,14 @@ for(let i = 1; i < 5; i++){
     }
 }
 
-
-
-
 /// If fill makes the player "win" or cover 20 tiles
 if(clickedSquareIndexes.length >= 20) {
     state = 'winner'
     handleWin()
 }
 
-
-if(copyOfClicked === undefined){
 /// Only happens first time
+if(copyOfClicked === undefined){
 copyOfClicked = clickedSquareIndexes.slice(0)
 ////Makes sure to skip any non nulls
 while(newBoard[copyOfClicked[0] - 1] !== null && copyOfClicked.length > 0){
@@ -503,8 +489,6 @@ handleNULL(copyOfClicked[0])
         copyOfClicked.shift()
     }
 }
-
-
 
 let curLastEl = copyOfClicked[copyOfClicked.length - 1]
 
@@ -524,7 +508,7 @@ if(copyOfClicked.length){
 }
 
 
-
+/// Builds a new 'board' with the mine locations added as well as the numbers surrounding them
 function handleBombLocations(){
 getBombLocations()
 
@@ -554,7 +538,7 @@ while(newBoard.length){
 
 board = final
 
-
+//// Builds the numbers on the board, looks at the mine and adds to all of the boxes around it
 for(let i = 0; i< board.length; i++){
     for(let j = 0; j< board.length; j++){
 
@@ -657,7 +641,7 @@ for(let i = 0; i< board.length; i++){
 renderNumberColor(board.flat())
 }
 
-
+/// Adds the classes necessary to change the colors of the numbers based on their amount
 function renderNumberColor(flattenedBoard){
 
     /// Clears old classlist
