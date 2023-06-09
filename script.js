@@ -39,11 +39,8 @@ reset.addEventListener('click', init)
 boardLayout.addEventListener('click', handleClickChoice)
 choiceShovelDiv.addEventListener('click', handleShovelClick)
 choiceFlagDiv.addEventListener('click', handleFlagClick)
-
-
     
 ////////FUNCTIONS
-
 init()
 
 function init(){
@@ -107,7 +104,10 @@ function handleClickChoice(e){
 
 
 function handleClickShovel(e){
+    
     let choiceId = e.target
+    if(choiceId.id === 'boardLayout') return
+    console.log(choiceId)
     if(state === 'loss' || state === 'winner') return
     if(choiceId.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
     if(choiceOfItem === 'flag') return
@@ -271,7 +271,6 @@ function handleNULL(e) {
 }
 
 // Right fill
-
     for(let i = 0; i < newBoard.length; i++){
         let edgeNums = [25, 20, 15, 10, 5]
         let indexForNewBoard = idx + i
