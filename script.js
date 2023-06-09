@@ -1,6 +1,6 @@
 
 /// Constant elements
-const mine = `<img class='' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
+const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
 const PICTURES = {
     null: '',
     mine: mine,
@@ -307,13 +307,6 @@ function handleNULL(e) {
             pushClickSquare(indexForNewBoard)
         }
 
-
-     
-        
-
-
-
-
 }
 
 // ///Have to subtract one everywhere but when getting element because id of elements are not zero indexed whereas the newBoard is
@@ -429,22 +422,15 @@ if(clickedSquareIndexes.length >= 20) {
     handleWin()
 }
 
-console.log(copyOfClicked, 'BENNETT 9999999999')
 /// Only happens first time
-
-
-
-
 
 if(copyOfClicked === undefined){
 copyOfClicked = clickedSquareIndexes.slice(0)
 copyOfClickedReference = clickedSquareIndexes.slice(0)
 ////Makes sure to skip any non nulls
-console.log(copyOfClicked, 'BEFORE EVERYTHING')
 while(newBoard[copyOfClicked[0]] !== null && copyOfClicked.length > 0){
     copyOfClicked.shift()
 }
-console.log(copyOfClicked, 'AFTER EVERYTHING')
 // Once it gets to a null space, calls that null space
 handleNULL(copyOfClicked[0])
 } else if(copyOfClicked.length > 0){
@@ -455,11 +441,8 @@ handleNULL(copyOfClicked[0])
     if(copyOfClicked.length === 0){
     /////////
     let curLastEl = copyOfClickedReference[copyOfClickedReference.length - 1]
-    console.log(copyOfClickedReference, curLastEl, 'without addition', copyOfClicked)
     let addition = clickedSquareIndexes.slice(clickedSquareIndexes.indexOf(curLastEl))
     copyOfClicked = [...copyOfClicked, ...addition]
-    console.log(copyOfClicked, 'with addition')
-    console.log(copyOfClicked, 'BEFORE EVERYTHING 2', 'MR CRASH YOUR SHIT MANNNNNNNNNNNNNNNNN')
     }
 /////////
 
@@ -468,93 +451,25 @@ handleNULL(copyOfClicked[0])
 while(newBoard[copyOfClicked[0]] !== null && copyOfClicked.length > 0){
     copyOfClicked.shift()
 }
-console.log(copyOfClicked, 'AFTER EVERYTHING 2')
-
     if(copyOfClicked.length){
     handleNULL(copyOfClicked[0])
     }
 return
 } else if(copyOfClicked.length < 1){
-    console.log('lonesome pine can you hear me calling')
     let curLastEl = copyOfClickedReference[copyOfClickedReference.length - 1]
-
-
-
-    console.log(copyOfClickedReference, curLastEl, 'without addition', copyOfClicked)
-
-
     let addition = clickedSquareIndexes.slice(clickedSquareIndexes.indexOf(curLastEl))
-
-    console.log(addition, 'adddddddittion', clickedSquareIndexes.indexOf(curLastEl))
     copyOfClicked = [...copyOfClicked, ...addition]
-    console.log(copyOfClicked, 'with addition from blank')
     while(newBoard[copyOfClicked[0]] !== null && copyOfClicked.length > 0){
     copyOfClicked.shift()
-    console.log(copyOfClicked, 'changing lower')
     }
     handleNULL(copyOfClicked[0])
     return;
 }
 
-
-
-// else if (copyOfClicked === [] && (copyOfClickedReference.length !== clickedSquareIndexes.length)){
-
-//     let curLastEl = copyOfClickedReference[copyOfClickedReference.length - 1]
-//     console.log(copyOfClicked, 'without addition')
-//     let addition = clickedSquareIndexes.slice(clickedSquareIndexes.indexOf(curLastEl))
-//     copyOfClicked = [...copyOfClicked, ...addition]
-//     console.log(copyOfClicked, 'with addition')
-//     handleNULL(copyOfClicked[0])
-// } else if(copyOfClicked === []) {
-//     return
-//  } else {
-//     return
-//  }
-
-
-
-
-
-
-
-
-
-
-
-
-// if(copyOfClicked === undefined){
-// copyOfClicked = clickedSquareIndexes.slice(0)
-// ////Makes sure to skip any non nulls
-// while(newBoard[copyOfClicked[0]] !== null && copyOfClicked.length > 0){
-//     copyOfClicked.shift()
-// }
-// handleNULL(copyOfClicked[0])
-// } else if(copyOfClicked.length > 1){
-//     copyOfClicked.shift()
-//     while(newBoard[copyOfClicked[0]] !== null && copyOfClicked.length > 0){
-//         copyOfClicked.shift()
-//     }
-//     return
-// } else if(copyOfClicked === []) {
-//    return
-// }
-
-// let curLastEl = copyOfClicked[copyOfClicked.length - 1]
-
-// if(copyOfClicked.length > 0){   
-//     let addition = clickedSquareIndexes.slice(clickedSquareIndexes.indexOf(curLastEl))
-//     copyOfClicked = [...copyOfClicked, ...addition]
-// }
-
-//// Calls handleNULL if their are elements left, else ends it
-
-// console.log(copyOfClicked, 'before it happens', clickedSquareIndexes)
-console.log(copyOfClicked.length, copyOfClicked, 'last change')
  if(copyOfClicked.length){
     handleNULL(copyOfClicked[0])
 } else {
-    console.log('end IT', copyOfClicked, clickedSquareIndexes.length, clickedSquareIndexes)
+
     return
 }
 
