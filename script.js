@@ -681,6 +681,4 @@ function renderNumberColor(flattenedBoard){
 
     }
 
-    
-
 }
