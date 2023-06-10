@@ -23,7 +23,6 @@ let state;
 let choiceOfItem;
 let firstClickLocation;
 let firstMineLocation;
-let copyOfClicked;
 let beenChecked;
 
 ///Cached elements
@@ -56,7 +55,6 @@ state = 'playing'
 document.querySelectorAll('.box').forEach(e => e.style.backgroundColor = 'gray')
 message.innerText = 'Avoid digging the hidden mines!'
 clickedSquareIndexes = [];
-copyOfClicked = undefined;
 choiceOfItem = 'shovel';
 firstClickLocation = [];
 beenChecked = [];
