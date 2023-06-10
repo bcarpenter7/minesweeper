@@ -113,8 +113,8 @@ function handleClickShovel(e){
     if(choiceId.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
     if(choiceOfItem === 'flag') return
     /// If a bomb is chosen on the first turn, the board is rerendered and then the target is changed to match the target of that current location now
-    if(choiceId.id === 'mine' && firstClickLocation.length < 1){
-        
+    if(choiceId.id === 'mine' && firstClickLocation.length < 1 || board.flat()[choiceId.id] !== null && firstClickLocation < 1){
+        console.log('happening')
         firstMineLocation = choiceId.parentNode.id
         render()
         choiceId = document.getElementById(firstMineLocation)
@@ -124,6 +124,11 @@ function handleClickShovel(e){
         }
         console.log(choiceId, 'THIS IS WHAT MATTERS', firstMineLocation, choiceId.parentNode.id, board.flat()[choiceId.id])
     }
+
+
+
+
+
     firstClickLocation = choiceId.parentNode.id
     choiceId.classList.remove('hidden');
     choiceId.style.backgroundColor = lightGrey;
