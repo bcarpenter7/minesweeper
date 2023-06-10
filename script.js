@@ -102,11 +102,9 @@ function handleClickChoice(e){
 
 
 
-function handleClickShovel(e){
-    
+function handleClickShovel(e){ 
     let choiceId = e.target
     if(choiceId.id === 'boardLayout') return
-    console.log(choiceId)
     if(state === 'loss' || state === 'winner') return
     if(choiceId.src === 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Minesweeper_flag.svg/2048px-Minesweeper_flag.svg.png') return
     if(choiceOfItem === 'flag') return
@@ -147,7 +145,6 @@ function handleClickShovel(e){
              if(clickedSquareIndexes.indexOf(Number(choiceId.id)) > -1) return
         choiceId.innerText = board.flat()[firstMineLocation]  
     } else if(choiceId.tagName === 'DIV'){
-        console.log('here', choiceId)
         handleNULL(choiceId)
         if(clickedSquareIndexes.indexOf(Number(choiceId.id)) < 0){
             clickedSquareIndexes.push(Number(choiceId.id))
@@ -206,7 +203,7 @@ if(e.target.style.backgroundColor === lightGrey) return //// if it has already b
 
 function handleLoss(currentMine){
 message.innerText = 'You Lose!'
-/// Reveals mine after lostt, then adds the animation to the mine they touched
+/// Reveals mine after lost, then adds the animation to the mine they touched
 document.querySelectorAll('.hidden').forEach(e => e.classList.remove('hidden'))
 currentMine.classList.add('bombAction')
 setTimeout(() => document.querySelectorAll('#mine').forEach(e => e.src = 'https://www.freepnglogos.com/uploads/explosion/clipart-starburst-explosion-comic-vector-png-transparent-5.png'), 1000)
@@ -264,7 +261,6 @@ function pushClickSquare(indexForNewBoard){
 
 
 function handleNULL(e) {
-    let oldBoard = board
     let newBoard = board.flat()
     let idx = Number(e.id) > -1 ? Number(e.id) : e
 
@@ -612,7 +608,6 @@ function renderNumberColor(flattenedBoard){
             document.getElementById(i).classList.remove('numberSix')
             document.getElementById(i).classList.remove('numberSeven')
             document.getElementById(i).classList.remove('numberEight')
-            
             }
     }
     
