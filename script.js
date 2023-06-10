@@ -1,6 +1,6 @@
 
 /// Constant elements
-const mine = `<img class='hidden' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
+const mine = `<img class='' id='mine' src='https://www.giantbomb.com/a/uploads/scale_medium/8/87790/3216800-icon_mine.png' height='70vmin'>`
 const PICTURES = {
     null: '',
     mine: mine,
@@ -24,6 +24,7 @@ let choiceOfItem;
 let firstClickLocation;
 let firstMineLocation;
 let copyOfClicked;
+let beenChecked;
 
 ///Cached elements
 const reset = document.getElementById('reset')
@@ -58,6 +59,7 @@ clickedSquareIndexes = [];
 copyOfClicked = undefined;
 choiceOfItem = 'shovel';
 firstClickLocation = [];
+beenChecked = [];
 render()
 }
 
@@ -112,9 +114,15 @@ function handleClickShovel(e){
     if(choiceOfItem === 'flag') return
     /// If a bomb is chosen on the first turn, the board is rerendered and then the target is changed to match the target of that current location now
     if(choiceId.id === 'mine' && firstClickLocation.length < 1){
+        
         firstMineLocation = choiceId.parentNode.id
         render()
         choiceId = document.getElementById(firstMineLocation)
+        ///// This while loops makes the board rerender until you can get a flood start, also prevents rendering a bomb under you twice
+        while(board.flat()[choiceId.id] !== null){
+            render()
+        }
+        console.log(choiceId, 'THIS IS WHAT MATTERS', firstMineLocation, choiceId.parentNode.id, board.flat()[choiceId.id])
     }
     firstClickLocation = choiceId.parentNode.id
     choiceId.classList.remove('hidden');
@@ -134,7 +142,7 @@ function handleClickShovel(e){
    if(choiceId.tagName === 'DIV' && choiceId.classList[1] !== undefined){
             //// Guard clause prevents clicking on a 'P' element once it has been autofilled
              if(clickedSquareIndexes.indexOf(Number(choiceId.id)) > -1) return
-        choiceId.innerText = board.flat()[firstMineLocation - 1]  
+        choiceId.innerText = board.flat()[firstMineLocation]  
     } else if(choiceId.tagName === 'DIV'){
         console.log('here', choiceId)
         handleNULL(choiceId)
@@ -253,21 +261,19 @@ function pushClickSquare(indexForNewBoard){
 
 
 function handleNULL(e) {
-    console.log(e.id, Number(e.id), 'LOOK', e)
     let oldBoard = board
     let newBoard = board.flat()
     let idx = Number(e.id) > -1 ? Number(e.id) : e
-    console.log(idx, e.id, Number(e.id), 'LOOK')
-    console.log(clickedSquareIndexes, 'HERE')
+
+///
+    beenChecked.push(idx)
+///
     if(clickedSquareIndexes.indexOf(idx) < 0){
         clickedSquareIndexes.push(idx)
     }
-    console.log(clickedSquareIndexes, 'did it?')
-    
 
     let rightSideNums = [24, 19, 14, 9, 4]
     let leftSideNums = [20, 15, 10, 5, 0]
-
 
 //Left fill
 
@@ -333,6 +339,13 @@ for(let i = 1; i < 5; i++){
 for(let i = 1; i < 5; i++){
 let indexForNewBoard = idx - (5 * i) + i
 let currentElem = document.getElementById(`${indexForNewBoard}`)
+
+ /// Should not even try to check to the right if on the edge
+ if(rightSideNums.indexOf(idx) > -1 || leftSideNums.indexOf(indexForNewBoard) > -1){
+    break;
+}
+
+
     if(typeof(newBoard[indexForNewBoard]) === 'number' && leftSideNums.indexOf(indexForNewBoard) < 0){
         elementChangeFill(currentElem, newBoard, indexForNewBoard)
         pushClickSquare(indexForNewBoard)
@@ -351,6 +364,12 @@ let currentElem = document.getElementById(`${indexForNewBoard}`)
 for(let i = 1; i < 5; i++){
 let indexForNewBoard = idx - (5 * i) - i
 let currentElem = document.getElementById(`${indexForNewBoard}`)
+
+ /// Should not even try to check to the right if on the edge
+ if(leftSideNums.indexOf(idx) > -1 || rightSideNums.indexOf(indexForNewBoard) > -1){
+break;
+}
+
 
 if(typeof(newBoard[indexForNewBoard]) === 'number' && rightSideNums.indexOf(indexForNewBoard) < 0){
     elementChangeFill(currentElem, newBoard, indexForNewBoard)
@@ -387,6 +406,12 @@ for(let i = 1; i < 5; i++){
     let indexForNewBoard = idx + (5 * i) - i
     let currentElem = document.getElementById(`${indexForNewBoard}`)
 
+    /// Should not even try to check to the right if on the edge
+        if(leftSideNums.indexOf(idx) > -1 || rightSideNums.indexOf(indexForNewBoard) > -1){
+     break;
+    }
+
+
     if(typeof(newBoard[indexForNewBoard]) === 'number' && rightSideNums.indexOf(indexForNewBoard) < 0){
         elementChangeFill(currentElem, newBoard, indexForNewBoard)
         pushClickSquare(indexForNewBoard)
@@ -404,13 +429,19 @@ for(let i = 1; i < 5; i++){
     let indexForNewBoard = idx + (5 * i) + i
     let currentElem = document.getElementById(`${indexForNewBoard}`)
 
+    /// Should not even try to check to the right if on the edge
+    if(rightSideNums.indexOf(idx) > -1 || leftSideNums.indexOf(indexForNewBoard) > -1){
+        break;
+    }
+
+
     if(typeof(newBoard[indexForNewBoard]) === 'number' && leftSideNums.indexOf(indexForNewBoard) < 0){
         elementChangeFill(currentElem, newBoard, indexForNewBoard)
         pushClickSquare(indexForNewBoard)
         break;
     } else if(newBoard[indexForNewBoard] !== null || rightSideNums.indexOf(idx) > -1){
     break;
-    } else if (newBoard[indexForNewBoard] === null){
+    } else if (newBoard[indexForNewBoard] === null ){
         currentElem.style.backgroundColor = lightGrey
         pushClickSquare(indexForNewBoard)
     }
@@ -422,55 +453,15 @@ if(clickedSquareIndexes.length >= 20) {
     handleWin()
 }
 
-/// Only happens first time
+/// recursive handleNULL function
 
-if(copyOfClicked === undefined){
-copyOfClicked = clickedSquareIndexes.slice(0)
-copyOfClickedReference = clickedSquareIndexes.slice(0)
-////Makes sure to skip any non nulls
-while(newBoard[copyOfClicked[0]] !== null && copyOfClicked.length > 0){
-    copyOfClicked.shift()
-}
-// Once it gets to a null space, calls that null space
-handleNULL(copyOfClicked[0])
-} else if(copyOfClicked.length > 0){
-    // Get rid of the old first element
-    copyOfClicked.shift()
-
-
-    if(copyOfClicked.length === 0){
-    /////////
-    let curLastEl = copyOfClickedReference[copyOfClickedReference.length - 1]
-    let addition = clickedSquareIndexes.slice(clickedSquareIndexes.indexOf(curLastEl))
-    copyOfClicked = [...copyOfClicked, ...addition]
+for(let i=0; i < clickedSquareIndexes.length; i++){
+    console.log(beenChecked, 'beenChecked')
+    console.log(newBoard[clickedSquareIndexes[i]] === null, beenChecked.indexOf(clickedSquareIndexes[i]), clickedSquareIndexes[i])
+    if(newBoard[clickedSquareIndexes[i]] === null && beenChecked.indexOf(clickedSquareIndexes[i]) < 0){
+        handleNULL(clickedSquareIndexes[i])
     }
-/////////
 
-
-
-while(newBoard[copyOfClicked[0]] !== null && copyOfClicked.length > 0){
-    copyOfClicked.shift()
-}
-    if(copyOfClicked.length){
-    handleNULL(copyOfClicked[0])
-    }
-return
-} else if(copyOfClicked.length < 1){
-    let curLastEl = copyOfClickedReference[copyOfClickedReference.length - 1]
-    let addition = clickedSquareIndexes.slice(clickedSquareIndexes.indexOf(curLastEl))
-    copyOfClicked = [...copyOfClicked, ...addition]
-    while(newBoard[copyOfClicked[0]] !== null && copyOfClicked.length > 0){
-    copyOfClicked.shift()
-    }
-    handleNULL(copyOfClicked[0])
-    return;
-}
-
- if(copyOfClicked.length){
-    handleNULL(copyOfClicked[0])
-} else {
-
-    return
 }
 
 }
